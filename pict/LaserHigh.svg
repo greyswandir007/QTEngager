@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<svg width="16" height="16">
+ <g id="LaserHigh">
+  <title>LaserHigh</title>
+  <circle cy="8" cx="8" stroke="#00007F" stroke-width="2" fill="#0000FF" id="circle_0" r="6"/>
+  <line stroke="#00007F" stroke-width="2" x1="1" fill="none" x2="4" y1="1" id="line_1" y2="4"/>
+  <line stroke="#00007F" stroke-width="2" x1="15" fill="none" x2="12" y1="1" id="line_2" y2="4"/>
+  <line stroke="#00007F" stroke-width="2" x1="1" fill="none" x2="4" y1="15" id="line_3" y2="12"/>
+  <line stroke="#00007F" stroke-width="2" x1="15" fill="none" x2="12" y1="15" id="line_4" y2="12"/>
+  <line stroke="#00007F" stroke-width="2" x1="8" fill="none" x2="8" y1="0" id="line_5" y2="3"/>
+  <line stroke="#00007F" stroke-width="2" x1="8" fill="none" x2="8" y1="13" id="line_6" y2="16"/>
+  <line stroke="#00007F" stroke-width="2" x1="0" fill="none" x2="3" y1="8" id="line_7" y2="8"/>
+  <line stroke="#00007F" stroke-width="2" x1="13" fill="none" x2="16" y1="8" id="line_8" y2="8"/>
+ </g>
+</svg>

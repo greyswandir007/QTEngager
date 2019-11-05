@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<svg width="16" height="16">
+ <g id="EmgStop">
+  <title>EmgStop</title>
+  <circle cy="8" cx="8" stroke="#AA0000" stroke-width="4" fill="#FF0000" id="circle_1" r="7"/>
+  <line stroke="#AA0000" stroke-width="4" x1="3" fill="none" x2="13" y1="13" id="line_0" y2="3"/>
+  <line stroke="#AA0000" stroke-width="4" x1="3" fill="none" x2="13" y1="3" id="line_1" y2="13"/>
+ </g>
+</svg>

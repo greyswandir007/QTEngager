@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>679</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QT Engager</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="rectangleButton">
+        <property name="text">
+         <string>Rectangle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelRectX">
+        <property name="text">
+         <string>x:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="rectangleX"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelRectY">
+        <property name="text">
+         <string>y:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="rectangleY"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelRectW">
+        <property name="text">
+         <string>w:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="rectangleW">
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelRectH">
+        <property name="text">
+         <string>h:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="rectangleH">
+        <property name="value">
+         <double>15.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPower1">
+        <property name="text">
+         <string>power</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="rectanglePower">
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="speedRectLabel">
+        <property name="text">
+         <string>speed:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="rectangleSpeed">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>3000</number>
+        </property>
+        <property name="value">
+         <number>3000</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QPushButton" name="circleButton">
+        <property name="text">
+         <string>Circle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelCircleX">
+        <property name="text">
+         <string>x:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="circleX">
+        <property name="value">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelCircleY">
+        <property name="text">
+         <string>y:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="circleY">
+        <property name="value">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelCircleR">
+        <property name="text">
+         <string>r:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="circleR">
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPower2">
+        <property name="text">
+         <string>power</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="circlePower">
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="speedCircleLabel">
+        <property name="text">
+         <string>speed:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="circleSpeed">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>3000</number>
+        </property>
+        <property name="value">
+         <number>3000</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="moveButton">
+        <property name="text">
+         <string>Move</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="moveXLabel">
+        <property name="text">
+         <string>x:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="moveX"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="moveYLabel">
+        <property name="text">
+         <string>y:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="moveY"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="moveSpeedLabel">
+        <property name="text">
+         <string>speed:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="moveSpeed">
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>3000</number>
+        </property>
+        <property name="value">
+         <number>3000</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QGraphicsView" name="graphicsView"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="loadButton">
+          <property name="text">
+           <string>Open</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="engageButton">
+          <property name="text">
+           <string>Engage</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="imageXLabel">
+            <property name="text">
+             <string>x:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="imageX"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="ImageYLabel">
+            <property name="text">
+             <string>y:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="imageY"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="scaleXLabel">
+            <property name="text">
+             <string>scale X:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="scaleImageX">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="scaleYLabel">
+            <property name="text">
+             <string>scale Y:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="scaleImageY">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="maxIntLabel">
+            <property name="text">
+             <string>maxInt:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="maxIntensity">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="value">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QProgressBar" name="engageProgress">
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comPortSelect"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_13">
+      <property name="spacing">
+       <number>30</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="timePassedLabel">
+        <property name="text">
+         <string>Time passed: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="timePassedValue">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="timeLeftLabel">
+        <property name="text">
+         <string>Time left: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="timeLeftValue">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>679</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEngager">
+    <property name="title">
+     <string>Engager</string>
+    </property>
+    <addaction name="actionLaser_off"/>
+    <addaction name="actionLaser_low"/>
+    <addaction name="actionLaser_middle"/>
+    <addaction name="actionLaser_high"/>
+    <addaction name="separator"/>
+    <addaction name="actionMove_left"/>
+    <addaction name="actionMove_right"/>
+    <addaction name="actionMove_forward"/>
+    <addaction name="actionMove_backward"/>
+    <addaction name="separator"/>
+    <addaction name="actionEngage_rect"/>
+    <addaction name="actionStart_engage"/>
+    <addaction name="actionStop_engage"/>
+    <addaction name="actionEmergency_stop"/>
+   </widget>
+   <widget class="QMenu" name="menuCom">
+    <property name="title">
+     <string>Com</string>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionAuto_Connect"/>
+    <addaction name="actionLog"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEngager"/>
+   <addaction name="menuCom"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionConnect"/>
+   <addaction name="separator"/>
+   <addaction name="actionMove_left"/>
+   <addaction name="actionMove_right"/>
+   <addaction name="actionMove_forward"/>
+   <addaction name="actionMove_backward"/>
+   <addaction name="separator"/>
+   <addaction name="actionLaser_off"/>
+   <addaction name="actionLaser_low"/>
+   <addaction name="actionLaser_middle"/>
+   <addaction name="actionLaser_high"/>
+   <addaction name="separator"/>
+   <addaction name="actionEngage_rect"/>
+   <addaction name="actionStart_engage"/>
+   <addaction name="actionStop_engage"/>
+   <addaction name="separator"/>
+   <addaction name="actionEmergency_stop"/>
+   <addaction name="separator"/>
+   <addaction name="actionLog"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionLaser_off">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/LaserOff.svg</normaloff>:/qtEngager/images/pict/LaserOff.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Laser off</string>
+   </property>
+  </action>
+  <action name="actionLaser_low">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/LaserLow.svg</normaloff>:/qtEngager/images/pict/LaserLow.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Laser low</string>
+   </property>
+  </action>
+  <action name="actionLaser_middle">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/LaserMiddle.svg</normaloff>:/qtEngager/images/pict/LaserMiddle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Laser middle</string>
+   </property>
+  </action>
+  <action name="actionLaser_high">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/LaserHigh.svg</normaloff>:/qtEngager/images/pict/LaserHigh.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Laser high</string>
+   </property>
+  </action>
+  <action name="actionMove_left">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/MoveLeft.svg</normaloff>:/qtEngager/images/pict/MoveLeft.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Move left</string>
+   </property>
+  </action>
+  <action name="actionMove_right">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/MoveRight.svg</normaloff>:/qtEngager/images/pict/MoveRight.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Move right</string>
+   </property>
+  </action>
+  <action name="actionMove_forward">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/MoveForward.svg</normaloff>:/qtEngager/images/pict/MoveForward.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Move forward</string>
+   </property>
+  </action>
+  <action name="actionMove_backward">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/MoveBackward.svg</normaloff>:/qtEngager/images/pict/MoveBackward.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Move backward</string>
+   </property>
+  </action>
+  <action name="actionEngage_rect">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/Rectangle.svg</normaloff>:/qtEngager/images/pict/Rectangle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Engage rect</string>
+   </property>
+  </action>
+  <action name="actionStart_engage">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/EngageProcess.svg</normaloff>:/qtEngager/images/pict/EngageProcess.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Start engage</string>
+   </property>
+  </action>
+  <action name="actionStop_engage">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/StopEngage.svg</normaloff>:/qtEngager/images/pict/StopEngage.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Stop engage</string>
+   </property>
+  </action>
+  <action name="actionEmergency_stop">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/EmgStop.svg</normaloff>:/qtEngager/images/pict/EmgStop.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Emergency stop</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="qtengager.qrc">
+     <normaloff>:/qtEngager/images/pict/Connected.svg</normaloff>:/qtEngager/images/pict/Connected.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionAuto_Connect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Auto Connect</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="text">
+    <string>Log</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="qtengager.qrc"/>
+ </resources>
+ <connections/>
+</ui>

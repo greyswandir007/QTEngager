@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="no"?>
+<svg width="48" height="48">
+ <g id="Rectangle">
+  <title>Rectangle</title>
+  <polyline stroke="#00007F" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" fill="none" points="22.875,25.75 5.125,25.75 5.125,4.875 26.375,4.875 20.25,1.125 20.375,10.375 26.375,3.75 " id="poliline_2"/>
+  <polyline stroke="#00007F" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" fill="none" points="30.875,4.75 47.125,4.625 47.125,27.5 28,27.5 34.75,21.625 34.75,34.75 28,26.125 " id="poliline_3"/>
+ </g>
+</svg>

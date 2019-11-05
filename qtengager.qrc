@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/qtEngager/images">
+        <file>pict/Connected.svg</file>
+        <file>pict/Disconnected.svg</file>
+        <file>pict/EmgStop.svg</file>
+        <file>pict/EngageProcess.svg</file>
+        <file>pict/LaserHigh.svg</file>
+        <file>pict/LaserLow.svg</file>
+        <file>pict/LaserMiddle.svg</file>
+        <file>pict/LaserOff.svg</file>
+        <file>pict/MoveBackward.svg</file>
+        <file>pict/MoveForward.svg</file>
+        <file>pict/MoveLeft.svg</file>
+        <file>pict/MoveRight.svg</file>
+        <file>pict/Rectangle.svg</file>
+        <file>pict/StopEngage.svg</file>
+    </qresource>
+</RCC>
