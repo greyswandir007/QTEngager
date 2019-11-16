@@ -1,6 +1,8 @@
+#include "gcodehelper.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QImageReader>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,9 +33,10 @@ void MainWindow::on_rectangleButton_clicked(){
     if (ui->rectanglePower->value() > 10) {
         power2 = 2800;
     }
-    engagerController.rectangle(ui->rectangleX->value(), ui->rectangleY->value(), ui->rectangleW->value(),
-                                ui->rectangleH->value(), ui->rectanglePower->value(), power2,
-                                ui->rectangleSpeed->value());
+    QStringList sequence = GCodeHelper::createRectangleSequence(ui->rectangleX->value(), ui->rectangleY->value(),
+                                                                ui->rectangleW->value(), ui->rectangleH->value(),
+                                                                ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_circleButton_clicked(){
@@ -41,8 +44,9 @@ void MainWindow::on_circleButton_clicked(){
     if (ui->rectanglePower->value() > 10) {
         power2 = 2800;
     }
-    engagerController.circle(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(), ui->circlePower->value(),
-                             power2, ui->circleSpeed->value());
+    QStringList sequence = GCodeHelper::createCircleSequence(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
+                                                             ui->circlePower->value(), power2, ui->circleSpeed->value());
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_connectToEngager() {
@@ -95,43 +99,64 @@ void MainWindow::on_actionLog_triggered() {
 }
 
 void MainWindow::on_actionMove_left_triggered() {
-    engagerController.moveX(10);
+    QStringList sequence = GCodeHelper::createMoveXSequence(10);
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_right_triggered() {
-    engagerController.moveX(-10);
+    QStringList sequence = GCodeHelper::createMoveXSequence(-10);
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_forward_triggered() {
-    engagerController.moveY(10);
+    QStringList sequence = GCodeHelper::createMoveYSequence(10);
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_backward_triggered() {
-    engagerController.moveY(-10);
+    QStringList sequence = GCodeHelper::createMoveYSequence(-10);
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionLaser_off_triggered() {
-    engagerController.createLaserPowerCommand(EngagerController::LaserPower::OFF);
+    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::OFF);
+    engagerController.sendCommand(command);
 }
 
 void MainWindow::on_actionLaser_low_triggered() {
-    engagerController.createLaserPowerCommand(EngagerController::LaserPower::LOW);
+    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::LOW);
+    engagerController.sendCommand(command);
 }
 
 void MainWindow::on_actionLaser_middle_triggered() {
-    engagerController.createLaserPowerCommand(EngagerController::LaserPower::MIDDLE);
+    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::MIDDLE);
+    engagerController.sendCommand(command);
 }
 
 void MainWindow::on_actionLaser_high_triggered() {
-    engagerController.createLaserPowerCommand(EngagerController::LaserPower::HIGH);
+    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::HIGH);
+    engagerController.sendCommand(command);
 }
 
 void MainWindow::on_actionEngage_rect_triggered() {
-    engagerController.rectangle();
+    int power2 = 0;
+    if (ui->rectanglePower->value() > 10) {
+        power2 = 2800;
+    }
+    QStringList sequence = GCodeHelper::createRectangleSequence(ui->rectangleX->value(), ui->rectangleY->value(),
+                                                                ui->rectangleW->value(), ui->rectangleH->value(),
+                                                                ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionStart_engage_triggered() {
-    engagerController.circle();
+    int power2 = 0;
+    if (ui->rectanglePower->value() > 10) {
+        power2 = 2800;
+    }
+    QStringList sequence = GCodeHelper::createCircleSequence(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
+                                                             ui->circlePower->value(), power2, ui->circleSpeed->value());
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionStop_engage_triggered() {
@@ -139,7 +164,8 @@ void MainWindow::on_actionStop_engage_triggered() {
 }
 
 void MainWindow::on_moveButton_clicked() {
-    engagerController.moveTo(ui->moveX->value(), ui->moveY->value(), ui->moveSpeed->value());
+    QStringList sequence = GCodeHelper::createMoveToSequence(ui->moveX->value(), ui->moveY->value(), ui->moveSpeed->value());
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_loadButton_clicked() {
@@ -151,6 +177,7 @@ void MainWindow::on_loadButton_clicked() {
 }
 
 void MainWindow::on_engageButton_clicked() {
-    engagerController.engageImage(loadedImage, ui->imageX->value(), ui->imageY->value(), ui->scaleImageX->value(),
-                                  ui->scaleImageY->value(), ui->maxIntensity->value());
+    QStringList sequence = GCodeHelper::createEngageImageSequence(loadedImage, ui->imageX->value(), ui->imageY->value(), ui->scaleImageX->value(),
+                                                                  ui->scaleImageY->value(), ui->maxIntensity->value());
+    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }

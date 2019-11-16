@@ -25,12 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    engagerprogram.cpp \
+    gcodehelper.cpp \
         main.cpp \
         mainwindow.cpp \
     engagercontroller.cpp \
     logdialog.cpp
 
 HEADERS += \
+    engagerprogram.h \
+    gcodehelper.h \
         mainwindow.h \
     engagercontroller.h \
     logdialog.h
