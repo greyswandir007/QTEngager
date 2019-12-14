@@ -3,6 +3,8 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QImageReader>
+#include "engagercommand.h"
+#include "gcodeconst.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -119,23 +121,19 @@ void MainWindow::on_actionMove_backward_triggered() {
 }
 
 void MainWindow::on_actionLaser_off_triggered() {
-    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::OFF);
-    engagerController.sendCommand(command);
+    engagerController.sendCommand(GCodeConst::laserPowerOff());
 }
 
 void MainWindow::on_actionLaser_low_triggered() {
-    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::LOW);
-    engagerController.sendCommand(command);
+    engagerController.sendCommand(GCodeConst::laserPowerLow());
 }
 
 void MainWindow::on_actionLaser_middle_triggered() {
-    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::MIDDLE);
-    engagerController.sendCommand(command);
+    engagerController.sendCommand(GCodeConst::laserPowerMedium());
 }
 
 void MainWindow::on_actionLaser_high_triggered() {
-    QString command = GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower::HIGH);
-    engagerController.sendCommand(command);
+    engagerController.sendCommand(GCodeConst::laserPowerHigh());
 }
 
 void MainWindow::on_actionEngage_rect_triggered() {

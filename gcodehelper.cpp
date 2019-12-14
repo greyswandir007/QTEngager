@@ -1,24 +1,11 @@
 #include "gcodehelper.h"
+#include "gcodeconst.h"
 #include <QImage>
 
 static bool zeroCoordSet = false;
 
 void GCodeHelper::reset() {
     zeroCoordSet = false;
-}
-
-QString GCodeHelper::createLaserPowerCommand(GCodeHelper::LaserPower power) {
-    switch (power) {
-    case LaserPower::OFF:
-        return "M05 L0\x0A";
-    case LaserPower::LOW:
-        return "M3 L2 P0\x0A";
-    case LaserPower::MIDDLE:
-        return "M3 L255 P0\x0A";
-    case LaserPower::HIGH:
-        return "M3 L255 P2800\x0A";
-    }
-    return "";
 }
 
 QString GCodeHelper::createLaserPowerCommand(bool enable, int power1, int power2) {
@@ -152,7 +139,7 @@ QStringList GCodeHelper::createCircleSequence(qreal x, qreal y, qreal r, int pow
     commands.append(createStartSequence());
     commands.append("G00 X0 Y0 F3000\x0A");
     commands.append("G92\x0A");
-    commands.append(createMoveCommand2(5, -5.9, 3000));
+    commands.append(createMoveCommand2(5, -5.9, MAX_SPEED));
     commands.append(createArcCommand(0, 0, 255, speed));
     commands.append(createMoveCommand2(4.4048, -13.1, speed));
     commands.append(createArcCommand(11.3952, 0, 255, speed));
@@ -185,5 +172,133 @@ QStringList GCodeHelper::createEngageImageSequence(QImage image, qreal x, qreal 
         }
     }
     commands.append(createCenterSequence());
+    return commands;
+}
+
+CommandQueue GCodeHelper::startQueue() {
+    CommandQueue commands;
+    commands.append(GCodeConst::metricCoordinateSystem());
+    commands.append(GCodeConst::absoluteCoordinate());
+    commands.append(GCodeConst::setNewZeroCoordinate());
+    commands.append(GCodeConst::laserPowerOff());
+    return commands;
+}
+
+CommandQueue GCodeHelper::centerQueue() {
+    CommandQueue commands;
+    commands.append(GCodeConst::laserPowerOff());
+    commands.append(GCodeConst::moveZero2());
+    commands.append(GCodeConst::moveZero());
+    return commands;
+}
+
+CommandQueue GCodeHelper::zeroCoordQueue() {
+    CommandQueue commands;
+    if (!zeroCoordSet) {
+        commands.append(GCodeConst::laserPowerLow());
+        commands.append(GCodeConst::moveZero());
+        zeroCoordSet = true;
+    }
+    commands.append(GCodeConst::relativeCoordinate());
+    return commands;
+}
+
+CommandQueue GCodeHelper::moveXQueue(qreal offset) {
+    CommandQueue commands = zeroCoordQueue();
+    commands.append(GCodeConst::moveRelativeX(offset, MAX_SPEED));
+    return commands;
+}
+
+CommandQueue GCodeHelper::moveYQueue(qreal offset) {
+    CommandQueue commands = zeroCoordQueue();
+    commands.append(GCodeConst::moveRelativeX(offset, MAX_SPEED));
+    return commands;
+}
+
+CommandQueue GCodeHelper::moveXQueue(int offset) {
+    CommandQueue commands = zeroCoordQueue();
+    commands.append(GCodeConst::moveRelativeX(offset, MAX_SPEED));
+    return commands;
+}
+
+CommandQueue GCodeHelper::moveYQueue(int offset) {
+    CommandQueue commands = zeroCoordQueue();
+    commands.append(GCodeConst::moveRelativeX(offset, MAX_SPEED));
+    return commands;
+}
+
+CommandQueue GCodeHelper::moveToQueue(qreal x, qreal y, int speed) {
+    CommandQueue commands = zeroCoordQueue();
+    commands.append(GCodeConst::move(x, y, speed));
+    return commands;
+}
+
+CommandQueue GCodeHelper::engageRectangleQueue() {
+    CommandQueue commands;
+    commands.append(startQueue());
+    commands.append(GCodeConst::move(4.404825582730206, -1.704825582730206, MAX_SPEED, 0));
+    commands.append(GCodeConst::laserPowerLow());
+    commands.append(GCodeConst::move(27.195174417269797, -1.704825582730206, MAX_SPEED, 0));
+    commands.append(GCodeConst::move(27.195174417269797, -24.495174417269794, MAX_SPEED, 0));
+    commands.append(GCodeConst::move(4.404825582730206, -24.495174417269794, MAX_SPEED, 0));
+    commands.append(GCodeConst::move(4.404825582730206, -1.704825582730206, MAX_SPEED, 0));
+    commands.append(GCodeConst::laserPowerOff());
+    commands.append(GCodeConst::moveZero2());
+    commands.append(GCodeConst::laserPowerOff());
+    commands.append(GCodeConst::moveZero());
+    return commands;
+}
+
+CommandQueue GCodeHelper::rectangleQueue(qreal x, qreal y, qreal w, qreal h, int power, int power2, int speed) {
+    CommandQueue commands;
+    commands.append(startQueue());
+    commands.append(GCodeConst::move(x, y, MAX_SPEED));
+    commands.append(GCodeConst::laserPower(power, power2));
+    commands.append(GCodeConst::move(x+w, y, speed));
+    commands.append(GCodeConst::move(x+w, y+h, speed));
+    commands.append(GCodeConst::move(x, y+h, speed));
+    commands.append(GCodeConst::move(x, y, speed));
+    commands.append(GCodeConst::laserPowerOff());
+    commands.append(centerQueue());
+    return commands;
+}
+
+CommandQueue GCodeHelper::circleQueue(qreal x, qreal y, qreal r, int power, int power2, int speed) {
+    CommandQueue commands;
+    commands.append(startQueue());
+    commands.append(GCodeConst::moveZero());
+    commands.append(GCodeConst::setNewZeroCoordinate());
+    commands.append(GCodeConst::move(5.0, -5.9, MAX_SPEED));
+    commands.append(GCodeConst::arcCCW(0, 0, speed, 255));
+    commands.append(GCodeConst::move(4.4048, -13.1, speed));
+    commands.append(GCodeConst::arcCCW(11.3952, 0, speed, 255));
+    commands.append(centerQueue());
+    return commands;
+}
+
+CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, int scaleX, int scaleY, int maxIntensity) {
+    CommandQueue commands;
+    commands.append(startQueue());
+    commands.append(GCodeConst::moveZero());
+    commands.append(GCodeConst::setNewZeroCoordinate());
+    qreal stepX = 0.1 * scaleX;
+    qreal startX = x;
+    for (int i = 0; i < image.height(); i++) {
+        for (int k = 0; k < scaleY; k++) {
+            x = startX;
+            for (int j = 0; j < image.width(); j++) {
+                int power = 255 - QColor(image.pixel(j, i)).toHsl().lightness();
+                commands.append(GCodeConst::move(x, y, MAX_SPEED, 0));
+                commands.append(GCodeConst::laserPower(static_cast<int>((maxIntensity/255.0) * power)));
+                if (scaleX > 1) {
+                    commands.append(GCodeConst::move(x + stepX - 0.1, y, MAX_SPEED, 0));
+                }
+                commands.append(GCodeConst::laserPowerOff());
+                x += stepX;
+            }
+            y += 0.1;
+        }
+    }
+    commands.append(centerQueue());
     return commands;
 }

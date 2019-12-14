@@ -7,23 +7,23 @@ class EngagerProgram
 {
 public:
     EngagerProgram();
-    EngagerProgram(QStringList engagerProgram);
-    QStringList currentProgram();
-    void setCurrentProgram(QStringList engagerProgram);
-    void loadProgram(QString filename);
-    void saveProgram(QString filename);
+    EngagerProgram(const QStringList &engagerProgram);
+    QStringList currentProgram() const;
+    void setCurrentProgram(const QStringList &engagerProgram);
+    void loadProgram(const QString &filename);
+    void saveProgram(const QString &filename);
     void newProgram();
 
-    void addCommand(QString command);
+    void addCommand(const QString &command);
 
     QString pullCommand();
-    bool hasCommand();
+    bool hasCommand() const;
 
-    int totalCommandCount();
-    int passedCommandCount();
-    int leftCommandCount();
+    int totalCommandCount() const;
+    int passedCommandCount() const;
+    int leftCommandCount() const;
 
-    float getCurrentProgress();
+    float getCurrentProgress() const;
 
 private:
     QStringList engagerProgram;

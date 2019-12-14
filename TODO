@@ -1,6 +1,6 @@
 Current version 0.01
 
-1. Add EngageCommand class for commands with descriptions and delay between execution.
+1. Add EngagerCommand class for commands with descriptions and delay between execution.
 2. Add EngagerSettings class for settings desription and different usage of engager, like engage, engage image, cut 
    and so on wiht dependence on laser power(mW).
 3. Add VectorGraphEditor for visual control of elements placement with cm(inch) rulers (Base From GraphEdit project).

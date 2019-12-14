@@ -13,6 +13,6 @@ LogDialog::~LogDialog()
     delete ui;
 }
 
-QTextEdit *LogDialog::logTextEdit() {
+QTextEdit *LogDialog::logTextEdit() const {
     return ui->logTextEdit;
 }

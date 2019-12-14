@@ -43,11 +43,9 @@ private slots:
     void on_actionStop_engage_triggered();
     void on_moveButton_clicked();
     void on_loadButton_clicked();
-
     void on_engageButton_clicked();
 
 private:
-    void sendCommand(QString command);
     Ui::MainWindow *ui;
     EngagerController engagerController;
     LogDialog *logDialog;

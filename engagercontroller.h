@@ -1,6 +1,7 @@
 #ifndef ENGAGERCONTROLLER_H
 #define ENGAGERCONTROLLER_H
 
+#include "engagercommand.h"
 #include "engagerprogram.h"
 
 #include <QObject>
@@ -20,17 +21,18 @@ public:
     };
 
     EngagerController();
-    void sendCommand(QString command);
+    void sendCommand(const QString &command);
+    void sendCommand(const EngagerCommand &command);
     void updateComPortList();
-    QStringList getComPortList();
+    QStringList getComPortList() const;
     void setTextLog(QTextEdit *textLog);
     void engagerConnect(int index);
     void engagerDisconnect();
 
     void runEngagerProgram(EngagerProgram *program);
 
-    int connectedPortIndex();
-    bool isConnected();
+    int connectedPortIndex() const;
+    bool isConnected() const;
     void setAutoConnect(bool autoConnect);
     void setEngageProgressBar(QProgressBar *engageProgress);
     void setPassedTimeLabel(QLabel *passedTime);
@@ -69,9 +71,9 @@ private:
 
     EngagerProgram *engagerProgram;
 
-    void sendCommandFromSequence(QString command);
+    void sendCommandFromSequence(const QString &command);
     void sendNextCommand();
-    void addLog(QString logLine);
+    void addLog(const QString &logLine);
     void clearLog();
 };
 

@@ -15,7 +15,7 @@ class LogDialog : public QDialog
 public:
     explicit LogDialog(QWidget *parent = nullptr);
     ~LogDialog();
-    QTextEdit *logTextEdit();
+    QTextEdit *logTextEdit() const;
 
 private:
     Ui::LogDialog *ui;

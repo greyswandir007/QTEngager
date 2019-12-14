@@ -6,23 +6,23 @@ EngagerProgram::EngagerProgram() {
     passedCount = 0;
 }
 
-EngagerProgram::EngagerProgram(QStringList engagerProgram) {
+EngagerProgram::EngagerProgram(const QStringList &engagerProgram) {
     this->engagerProgram = engagerProgram;
     totalCount = engagerProgram.count();
     passedCount = 0;
 }
 
-QStringList EngagerProgram::currentProgram() {
+QStringList EngagerProgram::currentProgram() const {
     return engagerProgram;
 }
 
-void EngagerProgram::setCurrentProgram(QStringList program) {
+void EngagerProgram::setCurrentProgram(const QStringList &program) {
     engagerProgram = program;
     totalCount = engagerProgram.count();
     passedCount = 0;
 }
 
-void EngagerProgram::loadProgram(QString filename) {
+void EngagerProgram::loadProgram(const QString &filename) {
     QFile file(filename);
     if (file.open(QIODevice::ReadOnly)) {
         QString str = str.fromLatin1(file.readAll());
@@ -37,7 +37,7 @@ void EngagerProgram::loadProgram(QString filename) {
     }
 }
 
-void EngagerProgram::saveProgram(QString filename) {
+void EngagerProgram::saveProgram(const QString &filename) {
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly)) {
         file.write(engagerProgram.join("").toLatin1());
@@ -51,7 +51,7 @@ void EngagerProgram::newProgram() {
     passedCount = 0;
 }
 
-void EngagerProgram::addCommand(QString command) {
+void EngagerProgram::addCommand(const QString &command) {
     engagerProgram.append(command);
     totalCount++;
 }
@@ -66,23 +66,23 @@ QString EngagerProgram::pullCommand() {
     return command;
 }
 
-bool EngagerProgram::hasCommand() {
+bool EngagerProgram::hasCommand() const {
     return !engagerProgram.isEmpty();
 }
 
-int EngagerProgram::totalCommandCount() {
+int EngagerProgram::totalCommandCount() const {
     return totalCount;
 }
 
-int EngagerProgram::passedCommandCount() {
+int EngagerProgram::passedCommandCount() const {
     return passedCount;
 }
 
-int EngagerProgram::leftCommandCount() {
+int EngagerProgram::leftCommandCount() const {
     return engagerProgram.count();
 }
 
-float EngagerProgram::getCurrentProgress() {
+float EngagerProgram::getCurrentProgress() const {
     if (engagerProgram.isEmpty()) {
         return 0;
     } else {

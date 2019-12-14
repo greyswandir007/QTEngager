@@ -30,14 +30,18 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     engagercontroller.cpp \
-    logdialog.cpp
+    logdialog.cpp \
+    engagercommand.cpp \
+    gcodeconst.cpp
 
 HEADERS += \
     engagerprogram.h \
     gcodehelper.h \
         mainwindow.h \
     engagercontroller.h \
-    logdialog.h
+    logdialog.h \
+    engagercommand.h \
+    gcodeconst.h
 
 FORMS += \
         mainwindow.ui \
@@ -50,3 +54,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     qtengager.qrc
+
+TRANSLATIONS += \
+    qtengager_ru.ts

@@ -19,9 +19,15 @@ EngagerController::EngagerController() {
     engagerProgram = nullptr;
 }
 
-void EngagerController::sendCommand(QString command) {
+void EngagerController::sendCommand(const QString &command) {
     if (connectedFlag2 && !commandSend && !engagerProgram) {
         sendCommandFromSequence(command);
+    }
+}
+
+void EngagerController::sendCommand(const EngagerCommand &command) {
+    if (connectedFlag2 && !commandSend && !engagerProgram) {
+        sendCommandFromSequence(command.getCommand());
     }
 }
 
@@ -34,7 +40,7 @@ void EngagerController::updateComPortList() {
     emit comPortListUpdate();
 }
 
-QStringList EngagerController::getComPortList() {
+QStringList EngagerController::getComPortList() const {
     return comPortList;
 }
 
@@ -79,11 +85,11 @@ void EngagerController::runEngagerProgram(EngagerProgram *program) {
     }
 }
 
-int EngagerController::connectedPortIndex() {
+int EngagerController::connectedPortIndex() const {
     return connectionPortIndex;
 }
 
-bool EngagerController::isConnected() {
+bool EngagerController::isConnected() const {
     return connectedFlag2;
 }
 
@@ -172,7 +178,7 @@ void EngagerController::on_timerEvent() {
     }
 }
 
-void EngagerController::sendCommandFromSequence(QString command) {
+void EngagerController::sendCommandFromSequence(const QString &command) {
     addLog("Sending command to com port: " + command);
     serialPort.write(command.toLatin1());
     commandSend = true;
@@ -191,8 +197,9 @@ void EngagerController::sendNextCommand() {
     }
 }
 
-void EngagerController::addLog(QString logLine) {
+void EngagerController::addLog(const QString &logLine) {
     if (textLog) {
+        QString logText = logLine;
         if (logLine == "ok\x0d\x0a") {
             textLog->setFocus();
             textLog->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
@@ -205,8 +212,8 @@ void EngagerController::addLog(QString logLine) {
             textLog->append(last);
         } else {
             QDateTime time = QDateTime::currentDateTime();
-            logLine = logLine.replace(0x0A,"\\x0A");
-            logLine = logLine.replace(0x0D,"\\x0D");
+            logText = logText.replace(0x0A, "\\x0A");
+            logText = logText.replace(0x0D, "\\x0D");
             textLog->append(time.toString("[hh:mm:ss,zzz]: ") + logLine);
         }
         textLog->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
