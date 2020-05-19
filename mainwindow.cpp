@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QGraphicsItem>
 #include <QImageReader>
 #include "engagercommand.h"
 #include "gcodeconst.h"
@@ -21,7 +22,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&engagerController, &EngagerController::connectedToEngager, this, &MainWindow::on_connectToEngager);
     connect(&engagerController, &EngagerController::disconnectedFromEngager, this, &MainWindow::on_disconnectFromEngager);
     connect(&engagerController, &EngagerController::comPortListUpdate, this, &MainWindow::on_comPortListUpdate);
-    ui->graphicsView->setScene(new QGraphicsScene());
+    ui->mainView->setScene(new QGraphicsScene());
+    QRect rec(ui->mainView->geometry());
+    ui->mainView->scene()->setSceneRect(0, 0, rec.width() - 3, rec.height() - 3);
+
+    connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
+    connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->mainView, SLOT(changeScale(double)));
+
+    connect(ui->verticalRuler, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
+    connect(ui->verticalRuler, SIGNAL(scaleChanged(double)), ui->mainView, SLOT(changeScale(double)));
+
+    connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
+    connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
 }
 
 MainWindow::~MainWindow() {
@@ -168,14 +180,18 @@ void MainWindow::on_moveButton_clicked() {
 
 void MainWindow::on_loadButton_clicked() {
     QString filename = QFileDialog::getOpenFileName();
-    QPixmap pixmap;
     loadedImage.load(filename);
-    pixmap.fromImage(loadedImage);
-    ui->graphicsView->scene()->addPixmap(pixmap);
+    ui->mainView->addPixmapToScene(QPixmap::fromImage(loadedImage), ui->scaleImageX->value());
+    ui->mainView->updateSceneRect();
 }
 
 void MainWindow::on_engageButton_clicked() {
     QStringList sequence = GCodeHelper::createEngageImageSequence(loadedImage, ui->imageX->value(), ui->imageY->value(), ui->scaleImageX->value(),
                                                                   ui->scaleImageY->value(), ui->maxIntensity->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event) {
+    QMainWindow::resizeEvent(event);
+    ui->mainView->updateSceneRect();
 }

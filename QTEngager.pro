@@ -32,7 +32,9 @@ SOURCES += \
     engagercontroller.cpp \
     logdialog.cpp \
     engagercommand.cpp \
-    gcodeconst.cpp
+    gcodeconst.cpp \
+    graphicsviewruler.cpp \
+    mainview.cpp
 
 HEADERS += \
     engagerprogram.h \
@@ -41,7 +43,9 @@ HEADERS += \
     engagercontroller.h \
     logdialog.h \
     engagercommand.h \
-    gcodeconst.h
+    gcodeconst.h \
+    graphicsviewruler.h \
+    mainview.h
 
 FORMS += \
         mainwindow.ui \

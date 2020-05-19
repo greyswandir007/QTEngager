@@ -50,6 +50,9 @@ private:
     EngagerController engagerController;
     LogDialog *logDialog;
     QImage loadedImage;
+
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 };
 
 #endif // MAINWINDOW_H
