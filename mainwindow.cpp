@@ -1,11 +1,11 @@
-#include "gcodehelper.h"
+#include "engager/gcodehelper.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QGraphicsItem>
 #include <QImageReader>
-#include "engagercommand.h"
-#include "gcodeconst.h"
+#include "engager/engagercommand.h"
+#include "engager/gcodeconst.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

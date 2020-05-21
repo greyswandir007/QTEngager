@@ -25,39 +25,49 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    engagerprogram.cpp \
-    gcodehelper.cpp \
-        main.cpp \
-        mainwindow.cpp \
-    engagercontroller.cpp \
-    logdialog.cpp \
-    engagercommand.cpp \
-    gcodeconst.cpp \
-    graphicsviewruler.cpp \
-    mainview.cpp
+    main.cpp \
+    mainwindow.cpp \
+    components/graphicsviewruler.cpp \
+    components/itempropertiesdialog.cpp \
+    components/itempropertiesmodel.cpp \
+    components/mainview.cpp \
+    engager/engagercommand.cpp \
+    engager/engagercontroller.cpp \
+    engager/engagerprogram.cpp \
+    engager/gcodeconst.cpp \
+    engager/gcodehelper.cpp \
+    engager/logdialog.cpp \
+    components/graphicsviewruler.cpp \
+    components/itempropertiesdialog.cpp \
+    components/itempropertiesmodel.cpp \
+    components/mainview.cpp
 
 HEADERS += \
-    engagerprogram.h \
-    gcodehelper.h \
-        mainwindow.h \
-    engagercontroller.h \
-    logdialog.h \
-    engagercommand.h \
-    gcodeconst.h \
-    graphicsviewruler.h \
-    mainview.h
+    mainwindow.h \
+    components/graphicsviewruler.h \
+    components/itempropertiesdialog.h \
+    components/itempropertiesmodel.h \
+    components/mainview.h \
+    engager/engagercommand.h \
+    engager/engagercontroller.h \
+    engager/engagerprogram.h \
+    engager/gcodeconst.h \
+    engager/gcodehelper.h \
+    engager/logdialog.h \
+    components/graphicsviewruler.h \
+    components/itempropertiesdialog.h \
+    components/itempropertiesmodel.h \
+    components/mainview.h
 
-FORMS += \
-        mainwindow.ui \
-    logdialog.ui
+FORMS += mainwindow.ui \
+    components/itempropertiesdialog.ui \
+    engager/logdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    qtengager.qrc
+RESOURCES += qtengager.qrc
 
-TRANSLATIONS += \
-    qtengager_ru.ts
+TRANSLATIONS += qtengager_ru.ts

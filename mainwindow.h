@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "engagercontroller.h"
-#include "logdialog.h"
+#include "engager/engagercontroller.h"
+#include "engager/logdialog.h"
 
 #include <QMainWindow>
 #include <QtSerialPort/QSerialPort>

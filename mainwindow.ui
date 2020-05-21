@@ -431,7 +431,11 @@
            </widget>
           </item>
           <item>
-           <widget class="MainView" name="mainView"/>
+           <widget class="MainView" name="mainView">
+            <property name="dragMode">
+             <enum>QGraphicsView::NoDrag</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -908,15 +912,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>GraphicsViewRuler</class>
-   <extends>QFrame</extends>
-   <header>graphicsviewruler.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>MainView</class>
    <extends>QGraphicsView</extends>
-   <header>mainview.h</header>
+   <header>components/mainview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GraphicsViewRuler</class>
+   <extends>QFrame</extends>
+   <header>components/graphicsviewruler.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
