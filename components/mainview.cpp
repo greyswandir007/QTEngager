@@ -1,10 +1,14 @@
 #include "mainview.h"
+#include "graphicitems/maingraphicsitem.h"
 
 #include <QGraphicsItem>
 #include <QWheelEvent>
+#include <QDebug>
+
+#include <components/graphicitems/mainpixmapitem.h>
 
 MainView::MainView(QWidget *parent) : QGraphicsView(parent) {
-
+    setMouseTracking(true);
 }
 
 void MainView::updateSceneRect() {
@@ -13,24 +17,35 @@ void MainView::updateSceneRect() {
 }
 
 void MainView::addPixmapToScene(QPixmap pixmap, int scale) {
-    QGraphicsPixmapItem *item = scene()->addPixmap(pixmap);
+    MainPixmapItem *item = new MainPixmapItem(pixmap);
     item->setScale(mainScaleFactor * mainScale * scale);
-    item->setData(0, scale);
+    item->setData(MAIN_SCALE_FACTOR, mainScaleFactor);
+    item->setData(MAIN_SCALE, mainScale);
+    item->setData(SCALE, scale);
+    item->setData(POSITION_X, 0.0);
+    item->setData(POSITION_Y, 0.0);
+    item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+    scene()->addItem(item);
 }
 
 void MainView::changeScale(double scale) {
     mainScale = scale;
     for(QGraphicsItem *item : scene()->items()) {
-        double scale = item->data(0).toDouble();
+        qreal scale = item->data(SCALE).toDouble();
+        qreal x = item->data(POSITION_X).toDouble() * mainScale;
+        qreal y = item->data(POSITION_Y).toDouble() * mainScale;
         item->setScale(mainScaleFactor * mainScale * scale);
+        item->setPos(x, y);
+        item->setData(MAIN_SCALE, mainScale);
     }
 }
 
 void MainView::mouseMoveEvent(QMouseEvent *event) {
-
+    QGraphicsView::mouseMoveEvent(event);
 }
 
 void MainView::mousePressEvent(QMouseEvent *event) {
+    QGraphicsView::mousePressEvent(event);
     if (event->button() == Qt::MidButton) {
         mainScale = 1;
         changeScale(mainScale);
@@ -40,10 +55,11 @@ void MainView::mousePressEvent(QMouseEvent *event) {
 }
 
 void MainView::mouseReleaseEvent(QMouseEvent *event) {
-
+    QGraphicsView::mouseReleaseEvent(event);
 }
 
 void MainView::wheelEvent(QWheelEvent *event) {
+    QGraphicsView::wheelEvent(event);
     double f = event->delta() / 120;
     double power = pow(1.1, fabs(f));
     if (f > 0) {
