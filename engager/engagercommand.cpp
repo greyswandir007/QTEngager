@@ -8,7 +8,7 @@ EngagerCommand::EngagerCommand(const QString &command, int delay, const QString 
     this->command = command;
     this->delay = delay;
     this->description = description;
-    if (!this->command.endsWith('\0x0A')) {
+    if (!this->command.endsWith("\0x0A")) {
         this->command += "\x0A";
     }
 }
@@ -19,7 +19,7 @@ QString EngagerCommand::getCommand() const {
 
 void EngagerCommand::setCommand(const QString &command) {
     this->command = command;
-    if (!this->command.endsWith('\0x0A')) {
+    if (!this->command.endsWith("\0x0A")) {
         this->command += "\x0A";
     }
 }

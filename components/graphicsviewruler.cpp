@@ -13,6 +13,7 @@ void GraphicsViewRuler::changeScale(double scale) {
 }
 
 void GraphicsViewRuler::mouseMoveEvent(QMouseEvent *event) {
+    QFrame::mouseMoveEvent(event);//stub
 }
 
 void GraphicsViewRuler::mousePressEvent(QMouseEvent *event) {
@@ -28,6 +29,7 @@ void GraphicsViewRuler::mousePressEvent(QMouseEvent *event) {
 }
 
 void GraphicsViewRuler::mouseReleaseEvent(QMouseEvent *event) {
+    QFrame::mouseMoveEvent(event);//stub
 }
 
 void GraphicsViewRuler::wheelEvent(QWheelEvent *event) {

@@ -1,6 +1,6 @@
 #include "mainpixmapitem.h"
 #include "maingraphicsitem.h"
-#include <QDebug>
+#include "../itempropertiesdialog.h"
 
 MainPixmapItem::MainPixmapItem(QGraphicsItem *parent) :
     QGraphicsPixmapItem (parent) {
@@ -14,33 +14,42 @@ MainPixmapItem::MainPixmapItem(const QPixmap &pixmap, QGraphicsItem *parent) :
 
 void MainPixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (event->buttons() | Qt::LeftButton && mousePressed) {
-        qreal x = (event->screenPos().x() - startX) + startPositionX;
-        qreal y = (event->screenPos().y() - startY) + startPositionY;
+        qreal x = (event->screenPos().x() - startScreenPos.x()) + startPosition.x();
+        qreal y = (event->screenPos().y() - startScreenPos.y()) + startPosition.y();
         setPos(x, y);
-        qreal scale = data(SCALE).toDouble();
-        setData(POSITION_X, x / scale);
-        setData(POSITION_Y, y / scale);
+        qreal mainScale = data(MAIN_SCALE).toDouble();
+        setData(POSITION_X, x / mainScale);
+        setData(POSITION_Y, y / mainScale);
     } else {
         mousePressed = false;
     }
+    QGraphicsPixmapItem::mouseMoveEvent(event);
 }
 
 void MainPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    qDebug() << "Pressed";
     if (event->button() == Qt::LeftButton) {
         mousePressed = true;
-        startX = event->screenPos().x();
-        startY = event->screenPos().y();
-        startPositionX = pos().x();
-        startPositionY = pos().y();
-        qDebug() << startX << startY;
-        qDebug() << startPositionX << startPositionY;
+        startScreenPos = event->screenPos();
+        startPosition = pos();
         setSelected(true);
     }
+    QGraphicsPixmapItem::mousePressEvent(event);
 }
 
 void MainPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         mousePressed = false;
     }
+    QGraphicsPixmapItem::mouseReleaseEvent(event);
+}
+
+void MainPixmapItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        ItemPropertiesDialog itemPropertiesDialog;
+        itemPropertiesDialog.setItem(this);
+        if (itemPropertiesDialog.exec() == QDialog::Accepted) {
+            itemPropertiesDialog.updateItem();
+        }
+    }
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }

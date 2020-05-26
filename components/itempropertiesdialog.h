@@ -4,6 +4,7 @@
 #include "itempropertiesmodel.h"
 
 #include <QDialog>
+#include <QGraphicsItem>
 
 namespace Ui {
 class ItemPropertiesDialog;
@@ -17,13 +18,18 @@ public:
     explicit ItemPropertiesDialog(QWidget *parent = nullptr);
     ~ItemPropertiesDialog();
 
-    void setItemProperties(QMap<QString, QVariant> values);
-    QMap<QString, QVariant> itemProperties();
+    void setItem(QGraphicsItem *item);
+    void updateItem();
 
 private:
     Ui::ItemPropertiesDialog *ui;
 
     ItemPropertiesModel *itemPropertyModel;
+    QGraphicsItem *mainItem;
+    QMap<QString, QVariant> itemProperties;
+    QStringList itemPropertyNames;
+    QList<int> itemPropertyIndexes;
+    QList<bool> itemPropertyMultiply;
 };
 
 #endif // ITEMPROPERTIESDIALOG_H

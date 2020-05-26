@@ -15,13 +15,12 @@ protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     bool mousePressed;
-    qreal startX;
-    qreal startY;
-    qreal startPositionX;
-    qreal startPositionY;
+    QPoint startScreenPos;
+    QPointF startPosition;
 };
 
 #endif // MAINPIXMAPITEM_H
