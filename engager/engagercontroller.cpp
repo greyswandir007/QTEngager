@@ -11,13 +11,13 @@ EngagerController::EngagerController() {
 }
 
 void EngagerController::sendCommand(const QString &command) {
-    if (connectedFlag2 && !commandSend && !engagerProgram) {
+    if ((connectedFlag2 || testMode) && !commandSend && !engagerProgram) {
         sendCommandFromSequence(command);
     }
 }
 
 void EngagerController::sendCommand(const EngagerCommand &command) {
-    if (connectedFlag2 && !commandSend && !engagerProgram) {
+    if ((connectedFlag2 || testMode) && !commandSend && !engagerProgram) {
         sendCommandFromSequence(command.getCommand());
     }
 }
@@ -117,12 +117,12 @@ void EngagerController::setLeftTimeLabel(QLabel *leftTime) {
 }
 
 void EngagerController::clearSequence() {
-    if (connectedFlag2) {
+    if (connectedFlag2 || testMode) {
         if (engagerProgram != nullptr) {
             delete engagerProgram;
         }
         engagerProgram = new EngagerProgram();
-        engagerProgram->setCurrentProgram(GCodeHelper::createCenterSequence());
+        engagerProgram->setCurrentProgram(GCodeHelper::centerQueue());
         sendCommandFromSequence(engagerProgram->pullCommand());
     }
 }
@@ -186,12 +186,12 @@ void EngagerController::on_timerEvent() {
     }
 }
 
-void EngagerController::sendCommandFromSequence(const QString &command) {
-    addLog("Sending command to com port: " + command);
+void EngagerController::sendCommandFromSequence(const EngagerCommand &command) {
+    addLog("Sending command to com port: " + command.getCommand());
     if (!testMode) {
-        serialPort.write(command.toLatin1());
+        serialPort.write(command.getCommand().toLatin1());
+        commandSend = true;
     }
-    commandSend = true;
 }
 
 void EngagerController::sendNextCommand() {

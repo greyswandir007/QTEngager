@@ -47,19 +47,15 @@ void MainWindow::on_rectangleButton_clicked(){
     if (ui->rectanglePower->value() > 10) {
         power2 = 2800;
     }
-    QStringList sequence = GCodeHelper::createRectangleSequence(ui->rectangleX->value(), ui->rectangleY->value(),
-                                                                ui->rectangleW->value(), ui->rectangleH->value(),
-                                                                ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
+    CommandQueue sequence = GCodeHelper::rectangleQueue(ui->rectangleX->value(), ui->rectangleY->value(),
+                                                        ui->rectangleW->value(), ui->rectangleH->value(),
+                                                        ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_circleButton_clicked(){
-    int power2 = 0;
-    if (ui->rectanglePower->value() > 10) {
-        power2 = 2800;
-    }
-    QStringList sequence = GCodeHelper::createCircleSequence(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
-                                                             ui->circlePower->value(), power2, ui->circleSpeed->value());
+    CommandQueue sequence = GCodeHelper::circleQueue(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
+                                                     ui->circlePower->value(), ui->circleSpeed->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
@@ -113,22 +109,22 @@ void MainWindow::on_actionLog_triggered() {
 }
 
 void MainWindow::on_actionMove_left_triggered() {
-    QStringList sequence = GCodeHelper::createMoveXSequence(10);
+    CommandQueue sequence = GCodeHelper::moveXQueue(10);
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_right_triggered() {
-    QStringList sequence = GCodeHelper::createMoveXSequence(-10);
+    CommandQueue sequence = GCodeHelper::moveXQueue(-10);
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_forward_triggered() {
-    QStringList sequence = GCodeHelper::createMoveYSequence(10);
+    CommandQueue sequence = GCodeHelper::moveYQueue(10);
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_backward_triggered() {
-    QStringList sequence = GCodeHelper::createMoveYSequence(-10);
+    CommandQueue sequence = GCodeHelper::moveYQueue(-10);
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
@@ -153,19 +149,14 @@ void MainWindow::on_actionEngage_rect_triggered() {
     if (ui->rectanglePower->value() > 10) {
         power2 = 2800;
     }
-    QStringList sequence = GCodeHelper::createRectangleSequence(ui->rectangleX->value(), ui->rectangleY->value(),
-                                                                ui->rectangleW->value(), ui->rectangleH->value(),
-                                                                ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
+    CommandQueue sequence = GCodeHelper::rectangleQueue(ui->rectangleX->value(), ui->rectangleY->value(),
+                                                        ui->rectangleW->value(), ui->rectangleH->value(),
+                                                        ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionStart_engage_triggered() {
-    int power2 = 0;
-    if (ui->rectanglePower->value() > 10) {
-        power2 = 2800;
-    }
-    QStringList sequence = GCodeHelper::createCircleSequence(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
-                                                             ui->circlePower->value(), power2, ui->circleSpeed->value());
+    CommandQueue sequence = GCodeHelper::circleQueue(ui->circleSpeed->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
@@ -174,7 +165,7 @@ void MainWindow::on_actionStop_engage_triggered() {
 }
 
 void MainWindow::on_moveButton_clicked() {
-    QStringList sequence = GCodeHelper::createMoveToSequence(ui->moveX->value(), ui->moveY->value(), ui->moveSpeed->value());
+    CommandQueue sequence = GCodeHelper::moveToQueue(ui->moveX->value(), ui->moveY->value(), ui->moveSpeed->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
@@ -186,8 +177,8 @@ void MainWindow::on_loadButton_clicked() {
 }
 
 void MainWindow::on_engageButton_clicked() {
-    QStringList sequence = GCodeHelper::createEngageImageSequence(loadedImage, ui->imageX->value(), ui->imageY->value(), ui->scaleImageX->value(),
-                                                                  ui->scaleImageY->value(), ui->maxIntensity->value());
+    CommandQueue sequence = GCodeHelper::engageImageQueue(loadedImage, ui->imageX->value(), ui->imageY->value(), ui->scaleImageX->value(),
+                                                          ui->scaleImageY->value(), ui->maxIntensity->value());
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 

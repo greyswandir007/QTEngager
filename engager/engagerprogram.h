@@ -2,21 +2,22 @@
 #define ENGAGERPROGRAM_H
 
 #include <QObject>
+#include "gcodehelper.h"
 
 class EngagerProgram
 {
 public:
     EngagerProgram();
-    EngagerProgram(const QStringList &engagerProgram);
-    QStringList currentProgram() const;
-    void setCurrentProgram(const QStringList &engagerProgram);
+    EngagerProgram(const CommandQueue &engagerProgram);
+    CommandQueue currentProgram() const;
+    void setCurrentProgram(const CommandQueue &engagerProgram);
     void loadProgram(const QString &filename);
     void saveProgram(const QString &filename);
     void newProgram();
 
-    void addCommand(const QString &command);
+    void addCommand(const CommandQueue &command);
 
-    QString pullCommand();
+    EngagerCommand pullCommand();
     bool hasCommand() const;
 
     int totalCommandCount() const;
@@ -26,7 +27,7 @@ public:
     float getCurrentProgress() const;
 
 private:
-    QStringList engagerProgram;
+    CommandQueue engagerProgram;
     int totalCount;
     int passedCount;
 };

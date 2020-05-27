@@ -6,17 +6,17 @@ EngagerProgram::EngagerProgram() {
     passedCount = 0;
 }
 
-EngagerProgram::EngagerProgram(const QStringList &engagerProgram) {
+EngagerProgram::EngagerProgram(const CommandQueue &engagerProgram) {
     this->engagerProgram = engagerProgram;
     totalCount = engagerProgram.count();
     passedCount = 0;
 }
 
-QStringList EngagerProgram::currentProgram() const {
+CommandQueue EngagerProgram::currentProgram() const {
     return engagerProgram;
 }
 
-void EngagerProgram::setCurrentProgram(const QStringList &program) {
+void EngagerProgram::setCurrentProgram(const CommandQueue &program) {
     engagerProgram = program;
     totalCount = engagerProgram.count();
     passedCount = 0;
@@ -24,14 +24,16 @@ void EngagerProgram::setCurrentProgram(const QStringList &program) {
 
 void EngagerProgram::loadProgram(const QString &filename) {
     QFile file(filename);
+    engagerProgram.clear();
     if (file.open(QIODevice::ReadOnly)) {
         QString str = str.fromLatin1(file.readAll());
-        engagerProgram = str.split("\x0A");
+        QStringList program = str.split("\x0A");
         for (int i = 0; i < engagerProgram.size(); i++) {
-            if (engagerProgram[i].endsWith("\x0D")) {
-                engagerProgram[i].truncate(engagerProgram[i].length()-1);
+            if (program [i].endsWith("\x0D")) {
+                program [i].truncate(engagerProgram[i].getCommand().length()-1);
             }
-            engagerProgram[i] += "\x0A";
+            program[i] += "\x0A";
+            engagerProgram.append(EngagerCommand(program[i]));
         }
         file.close();
     }
@@ -40,7 +42,11 @@ void EngagerProgram::loadProgram(const QString &filename) {
 void EngagerProgram::saveProgram(const QString &filename) {
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly)) {
-        file.write(engagerProgram.join("").toLatin1());
+        QString program = "";
+        for(EngagerCommand command : engagerProgram) {
+            program += command.getCommand();
+        }
+        file.write(program.toLatin1());
         file.close();
     }
 }
@@ -51,13 +57,13 @@ void EngagerProgram::newProgram() {
     passedCount = 0;
 }
 
-void EngagerProgram::addCommand(const QString &command) {
+void EngagerProgram::addCommand(const CommandQueue &command) {
     engagerProgram.append(command);
     totalCount++;
 }
 
-QString EngagerProgram::pullCommand() {
-    QString command;
+EngagerCommand EngagerProgram::pullCommand() {
+    EngagerCommand command;
     if (!engagerProgram.isEmpty()) {
         command = engagerProgram.at(0);
         engagerProgram.removeAt(0);
@@ -83,9 +89,5 @@ int EngagerProgram::leftCommandCount() const {
 }
 
 float EngagerProgram::getCurrentProgress() const {
-    if (engagerProgram.isEmpty()) {
-        return 0;
-    } else {
-        return passedCount * 100.0f / static_cast<float>(totalCount);
-    }
+    return engagerProgram.isEmpty() ? 0 : passedCount * 100.0f / static_cast<float>(totalCount);
 }

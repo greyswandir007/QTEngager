@@ -75,7 +75,7 @@ private:
 
     EngagerProgram *engagerProgram = nullptr;
 
-    void sendCommandFromSequence(const QString &command);
+    void sendCommandFromSequence(const EngagerCommand &command);
     void sendNextCommand();
     void addLog(const QString &logLine);
     void clearLog();
