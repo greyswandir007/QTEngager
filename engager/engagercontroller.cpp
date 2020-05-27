@@ -3,20 +3,11 @@
 #include <QDebug>
 
 EngagerController::EngagerController() {
-    connectedFlag = false;
-    commandSend = false;
-    connectingFlag = false;
-    zeroCoordSet = false;
-    connectedFlag2 = false;
-    autoConnectFlag = false;
     connect(&serialPort, &QSerialPort::readyRead, this, &EngagerController::on_serialPortRead);
     connect(&mainTimer, &QTimer::timeout, this, &EngagerController::on_timerEvent);
     updateComPortList();
-    mainTimer.start(500);
-    connectionPortIndex = 0;
-    timePassed = 0;
+    mainTimer.start(normalTimerPeriod);
     sequenceTimeStart = QDateTime::currentDateTime();
-    engagerProgram = nullptr;
 }
 
 void EngagerController::sendCommand(const QString &command) {
@@ -37,6 +28,7 @@ void EngagerController::updateComPortList() {
     for (const QSerialPortInfo &info : infos) {
         comPortList.append(info.portName());
     }
+    comPortList.append("Test");
     emit comPortListUpdate();
 }
 
@@ -50,19 +42,32 @@ void EngagerController::setTextLog(QTextEdit *textLog) {
 
 void EngagerController::engagerConnect(int index) {
     if (index >= 0 && index < comPortList.count()) {
-        serialPort.close();
-        serialPort.setPortName(comPortList.at(index));
-        serialPort.setBaudRate(115200);
-        if (serialPort.open(QIODevice::ReadWrite)) {
-            connectedFlag = true;
-            connectingFlag = true;
-            commandSend = false;
+        if (index == comPortList.count() - 1) {
+            testMode = true;
+            mainTimer.stop();
+            mainTimer.start(shortTimerPeriod);
+            addLog("Test mode");
+        } else {
+            serialPort.close();
+            serialPort.setPortName(comPortList.at(index));
+            serialPort.setBaudRate(115200);
+            if (serialPort.open(QIODevice::ReadWrite)) {
+                connectedFlag = true;
+                connectingFlag = true;
+                commandSend = false;
+                testMode = false;
+            }
         }
     }
 }
 
 void EngagerController::engagerDisconnect() {
-    serialPort.close();
+    if (!testMode) {
+        serialPort.close();
+    } else {
+        mainTimer.stop();
+        mainTimer.start(normalTimerPeriod);
+    }
     if (connectedFlag) {
         if (connectedFlag2) {
             connectedFlag2 = false;
@@ -73,14 +78,16 @@ void EngagerController::engagerDisconnect() {
         connectingFlag = false;
         commandSend = false;
     }
+    testMode = false;
 }
 
 void EngagerController::runEngagerProgram(EngagerProgram *program) {
-    if (connectedFlag2) {
+    if (connectedFlag2 || testMode) {
         if (engagerProgram != nullptr) {
             delete engagerProgram;
         }
         engagerProgram = program;
+        sequenceTimeStart = QDateTime::currentDateTime();
         sendCommandFromSequence(engagerProgram->pullCommand());
     }
 }
@@ -145,6 +152,9 @@ void EngagerController::on_serialPortRead() {
 }
 
 void EngagerController::on_timerEvent() {
+    if (testMode) {
+        sendNextCommand();
+    }
     if (connectedFlag2 && !commandSend) {
         sendNextCommand();
     }
@@ -169,18 +179,18 @@ void EngagerController::on_timerEvent() {
     if (engagerProgram && engagerProgram->hasCommand()) {
         QDateTime current = QDateTime::currentDateTime();
         qint64 tm = current.toMSecsSinceEpoch() - sequenceTimeStart.toMSecsSinceEpoch();
-        current = current.fromMSecsSinceEpoch(tm);
         double forOneCommmand = static_cast<double>(tm) / engagerProgram->passedCommandCount();
-        passedTimeLabel->setText(current.toString("hh:mm:ss"));
+        passedTimeLabel->setText(timeFromEpoch(tm, true));
         tm = static_cast<qint64>(forOneCommmand * engagerProgram->leftCommandCount());
-        current = current.fromMSecsSinceEpoch(tm);
-        leftTimeLable->setText(current.toString("hh:mm:ss"));
+        leftTimeLable->setText(timeFromEpoch(tm, false));
     }
 }
 
 void EngagerController::sendCommandFromSequence(const QString &command) {
     addLog("Sending command to com port: " + command);
-    serialPort.write(command.toLatin1());
+    if (!testMode) {
+        serialPort.write(command.toLatin1());
+    }
     commandSend = true;
 }
 
@@ -224,4 +234,11 @@ void EngagerController::clearLog() {
     if (textLog) {
         textLog->clear();
     }
+}
+
+QString EngagerController::timeFromEpoch(qint64 time, bool milliseconds) {
+    QString str = milliseconds ? "%1:%2:%3.%4" : "%1:%2:%3";
+    str = str.arg(time / 3600000, 2, 10, QChar('0')).arg((time / 60000) % 60, 2,  10, QChar('0'))
+            .arg((time / 1000) % 60, 2,  10, QChar('0'));
+    return milliseconds ? str.arg(time % 1000,  2,  10, QChar('0')) : str;
 }

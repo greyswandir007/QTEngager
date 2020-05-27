@@ -13,6 +13,7 @@
 #include <QDateTime>
 #include <QLabel>
 
+
 class EngagerController : public QObject {
     Q_OBJECT
 public:
@@ -57,24 +58,29 @@ private:
     QLabel *leftTimeLable;
     QTimer mainTimer;
 
-    bool connectedFlag;
-    bool connectedFlag2;
-    bool autoConnectFlag;
-    bool connectingFlag;
-    bool commandSend;
-    bool zeroCoordSet;
+    bool connectedFlag = false;
+    bool connectedFlag2 = false;
+    bool autoConnectFlag = false;
+    bool connectingFlag = false;
+    bool commandSend = false;
+    bool zeroCoordSet = false;
+    bool testMode = false;
 
-    int connectionPortIndex;
-    int timePassed;
+    int connectionPortIndex = 0;
+    int timePassed = 0;
+    int normalTimerPeriod = 500;
+    int shortTimerPeriod = 50;
 
     QDateTime sequenceTimeStart;
 
-    EngagerProgram *engagerProgram;
+    EngagerProgram *engagerProgram = nullptr;
 
     void sendCommandFromSequence(const QString &command);
     void sendNextCommand();
     void addLog(const QString &logLine);
     void clearLog();
+
+    QString timeFromEpoch(qint64 time, bool milliseconds);
 };
 
 #endif // ENGAGERCONTROLLER_H
