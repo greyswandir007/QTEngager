@@ -655,17 +655,24 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
+        <property name="leftMargin">
+         <number>0</number>
         </property>
-       </spacer>
+        <item>
+         <widget class="QLineEdit" name="commandEdit"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="sendCommand">
+          <property name="text">
+           <string>Send</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>

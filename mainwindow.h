@@ -44,6 +44,7 @@ private slots:
     void on_moveButton_clicked();
     void on_loadButton_clicked();
     void on_engageButton_clicked();
+    void on_sendCommand_clicked();
 
 private:
     Ui::MainWindow *ui;

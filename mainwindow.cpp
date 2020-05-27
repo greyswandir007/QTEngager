@@ -186,3 +186,10 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     ui->mainView->updateSceneRect();
 }
+
+void MainWindow::on_sendCommand_clicked() {
+    if (!ui->commandEdit->text().isEmpty()) {
+        engagerController.sendCommand(ui->commandEdit->text() + "\x0a");
+        ui->commandEdit->setText("");
+    }
+}

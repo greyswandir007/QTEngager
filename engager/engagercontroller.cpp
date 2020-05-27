@@ -12,13 +12,13 @@ EngagerController::EngagerController() {
 
 void EngagerController::sendCommand(const QString &command) {
     if ((connectedFlag2 || testMode) && !commandSend && !engagerProgram) {
-        sendCommandFromSequence(command);
+        sendCommandFromSequence(EngagerCommand(command));
     }
 }
 
 void EngagerController::sendCommand(const EngagerCommand &command) {
     if ((connectedFlag2 || testMode) && !commandSend && !engagerProgram) {
-        sendCommandFromSequence(command.getCommand());
+        sendCommandFromSequence(command);
     }
 }
 
@@ -224,7 +224,7 @@ void EngagerController::addLog(const QString &logLine) {
             QDateTime time = QDateTime::currentDateTime();
             logText = logText.replace(0x0A, "\\x0A");
             logText = logText.replace(0x0D, "\\x0D");
-            textLog->append(time.toString("[hh:mm:ss,zzz]: ") + logLine);
+            textLog->append(time.toString("[hh:mm:ss,zzz]: ") + logText);
         }
         textLog->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
     }
