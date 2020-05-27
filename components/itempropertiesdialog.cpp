@@ -9,9 +9,9 @@ ItemPropertiesDialog::ItemPropertiesDialog(QWidget *parent) :
     itemPropertyModel = new ItemPropertiesModel(nullptr);
     ui->propertiesTable->setModel(itemPropertyModel);
     mainItem = nullptr;
-    itemPropertyNames << tr("Scale") << tr("Position X, mm") << tr("Position Y, mm");
-    itemPropertyIndexes << SCALE << POSITION_X << POSITION_Y;
-    itemPropertyMultiply << false << true << true;
+    itemPropertyNames << tr("Scale") << tr("Position X, mm") << tr("Position Y, mm") << tr("Max Intensity value");
+    itemPropertyIndexes << SCALE << POSITION_X << POSITION_Y << MAX_INTENSITY_VALUE;
+    itemPropertyMultiply << false << true << true << false;
 }
 
 ItemPropertiesDialog::~ItemPropertiesDialog() {

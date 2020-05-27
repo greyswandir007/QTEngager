@@ -42,15 +42,14 @@ private slots:
     void on_actionStart_engage_triggered();
     void on_actionStop_engage_triggered();
     void on_moveButton_clicked();
-    void on_loadButton_clicked();
-    void on_engageButton_clicked();
     void on_sendCommand_clicked();
+    void on_actionAdd_image_triggered();
+    void on_actionEngage_triggered();
 
 private:
     Ui::MainWindow *ui;
     EngagerController engagerController;
     LogDialog *logDialog;
-    QImage loadedImage;
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

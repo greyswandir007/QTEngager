@@ -16,14 +16,15 @@ void MainView::updateSceneRect() {
     scene()->setSceneRect(0, 0, rec.width() - 3, rec.height() - 3);
 }
 
-void MainView::addPixmapToScene(QPixmap pixmap, int scale) {
+void MainView::addPixmapToScene(QPixmap pixmap) {
     MainPixmapItem *item = new MainPixmapItem(pixmap);
-    item->setScale(mainScaleFactor * mainScale * scale);
+    item->setScale(mainScaleFactor * mainScale);
     item->setData(MAIN_SCALE_FACTOR, mainScaleFactor);
     item->setData(MAIN_SCALE, mainScale);
-    item->setData(SCALE, scale);
+    item->setData(SCALE, 1.0);
     item->setData(POSITION_X, 0.0);
     item->setData(POSITION_Y, 0.0);
+    item->setData(MAX_INTENSITY_VALUE, 255);
     item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
     scene()->addItem(item);
 }

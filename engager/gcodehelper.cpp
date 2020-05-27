@@ -122,14 +122,16 @@ CommandQueue GCodeHelper::circleQueue(qreal x, qreal y, qreal r, int power, int 
     return commands;
 }
 
-CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, int scaleX, int scaleY, int maxIntensity) {
+CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, qreal scaleX, qreal scaleY, int maxIntensity) {
     CommandQueue commands;
     commands.append(startQueue());
     commands.append(GCodeConst::moveZero());
     commands.append(GCodeConst::setNewZeroCoordinate());
     qreal stepX = 0.1 * scaleX;
     qreal startX = x;
+    qreal y1;
     for (int i = 0; i < image.height(); i++) {
+        y1 = y;
         for (int k = 0; k < scaleY; k++) {
             x = startX;
             for (int j = 0; j < image.width(); j++) {
@@ -144,6 +146,7 @@ CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, int s
             }
             y += 0.1;
         }
+        y = y1 + scaleY * 0.1;
     }
     commands.append(centerQueue());
     return commands;

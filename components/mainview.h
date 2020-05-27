@@ -11,7 +11,7 @@ public:
     MainView(QWidget *parent);
 
     void updateSceneRect();
-    void addPixmapToScene(QPixmap pixmap, int scale);
+    void addPixmapToScene(QPixmap pixmap);
 
 signals:
     void scaleChanged(double scale);
