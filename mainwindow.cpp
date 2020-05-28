@@ -7,6 +7,7 @@
 #include "engager/engagercommand.h"
 #include "engager/gcodeconst.h"
 #include "components/graphicitems/maingraphicsitem.h"
+#include <components/graphicitems/mainsvgitem.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -196,14 +197,22 @@ void MainWindow::on_actionAdd_image_triggered() {
 void MainWindow::on_actionEngage_triggered() {
     CommandQueue sequence;
     for(QGraphicsItem *item : ui->mainView->scene()->items()) {
+        qreal multiply = 0.1 / item->data(MAIN_SCALE_FACTOR).toDouble();
+        qreal scale = item->data(SCALE).toDouble();
+        qreal x = item->data(POSITION_X).toDouble() * multiply;
+        qreal y = item->data(POSITION_Y).toDouble() * multiply;
+        int maxIndensity = item->data(MAX_INTENSITY_VALUE).toInt();
         const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem*>(item);
         if (pixmapItem != nullptr) {
-            qreal multiply = 0.1 / pixmapItem->data(MAIN_SCALE_FACTOR).toDouble();
-            qreal scale = pixmapItem->data(SCALE).toDouble();
-            qreal x = item->data(POSITION_X).toDouble() * multiply;
-            qreal y = item->data(POSITION_Y).toDouble() * multiply;
-            int maxIndensity = item->data(MAX_INTENSITY_VALUE).toInt();
             sequence.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale, scale, maxIndensity));
+        } else {
+            MainSvgItem *svgItem = dynamic_cast<MainSvgItem*>(item);
+            if (svgItem != nullptr) {
+                scale = 1;
+                QPixmap pixmap = svgItem->renderPixmap();
+                qDebug() << pixmap;
+                sequence.append(GCodeHelper::engageImageQueue(pixmap.toImage(), x, y, scale, scale, maxIndensity));
+            }
         }
     }
     engagerController.runEngagerProgram(new EngagerProgram(sequence));

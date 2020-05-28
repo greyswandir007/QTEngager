@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QWheelEvent>
 #include <QDebug>
+#include <QSvgRenderer>
 
 #include <components/graphicitems/mainpixmapitem.h>
 #include <components/graphicitems/mainsvgitem.h>
@@ -22,16 +23,17 @@ void MainView::addPixmapToScene(QPixmap pixmap) {
 }
 
 void MainView::addSvgToScene(QString filename) {
-    addItemToScene(new MainSvgItem(filename));
+    MainSvgItem *item= new MainSvgItem(filename);
+    addItemToScene(item);
 }
 
 void MainView::changeScale(double scale) {
     mainScale = scale;
+    scale = mainScale * mainScaleFactor;
     for(QGraphicsItem *item : scene()->items()) {
-        qreal scale = item->data(SCALE).toDouble();
         qreal x = item->data(POSITION_X).toDouble() * mainScale;
         qreal y = item->data(POSITION_Y).toDouble() * mainScale;
-        item->setScale(mainScaleFactor * mainScale * scale);
+        item->setScale(scale * item->data(SCALE).toDouble() * item->data(SCALE2).toDouble());
         item->setPos(x, y);
         item->setData(MAIN_SCALE, mainScale);
     }
@@ -59,19 +61,15 @@ void MainView::wheelEvent(QWheelEvent *event) {
     QGraphicsView::wheelEvent(event);
     double f = event->delta() / 120;
     double power = pow(1.1, fabs(f));
-    if (f > 0) {
-        mainScale *= power;
-    } else {
-        mainScale /= power;
-    }
+    mainScale = f > 0 ? mainScale * power : mainScale / power;
     changeScale(mainScale);
     emit scaleChanged(mainScale);
     event->accept();
 }
 
 void MainView::addItemToScene(QGraphicsItem *item) {
-    item->setScale(mainScaleFactor * mainScale);
     item->setData(MAIN_SCALE_FACTOR, mainScaleFactor);
     item->setData(MAIN_SCALE, mainScale);
+    item->setScale(mainScale * mainScaleFactor * item->data(SCALE).toDouble() * item->data(SCALE2).toDouble());
     scene()->addItem(item);
 }

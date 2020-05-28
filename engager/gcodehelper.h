@@ -23,7 +23,8 @@ public:
     static CommandQueue rectangleQueue(qreal x, qreal y, qreal w, qreal h, int power, int power2, int speed);
     static CommandQueue circleQueue(int speed);
     static CommandQueue circleQueue(qreal x, qreal y, qreal r, int power, int speed);
-    static CommandQueue engageImageQueue(QImage image, qreal x, qreal y, qreal scaleX, qreal scaleY, int maxIntensity);
+    static CommandQueue engageImageQueue(QImage image, qreal x, qreal y, qreal scaleX, qreal scaleY,
+                                         int maxIntensity, bool invert = false);
 };
 
 #endif // GCODEHELPER_H

@@ -30,6 +30,8 @@ protected:
 private:
     double mainScale = 1;
     double mainScaleFactor = 0.4;
+
+    void addItemToScene(QGraphicsItem *item);
 };
 
 #endif // MAINVIEW_H
