@@ -12,6 +12,7 @@ public:
 
     void updateSceneRect();
     void addPixmapToScene(QPixmap pixmap);
+    void addSvgToScene(QString filename);
 
 signals:
     void scaleChanged(double scale);

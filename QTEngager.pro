@@ -37,7 +37,8 @@ SOURCES += \
     engager/gcodeconst.cpp \
     engager/gcodehelper.cpp \
     engager/logdialog.cpp \
-    components/graphicitems/mainpixmapitem.cpp
+    components/graphicitems/mainpixmapitem.cpp \
+    components/graphicitems/mainsvgitem.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -52,7 +53,8 @@ HEADERS += \
     engager/gcodehelper.h \
     engager/logdialog.h \
     components/graphicitems/mainpixmapitem.h \
-    components/graphicitems/maingraphicsitem.h
+    components/graphicitems/maingraphicsitem.h \
+    components/graphicitems/mainsvgitem.h
 
 FORMS += mainwindow.ui \
     components/itempropertiesdialog.ui \

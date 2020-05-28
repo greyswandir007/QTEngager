@@ -185,10 +185,12 @@ void MainWindow::on_sendCommand_clicked() {
 void MainWindow::on_actionAdd_image_triggered() {
     QString filename = QFileDialog::getOpenFileName();
     QImage image;
-    if (image.load(filename)) {
+    if (filename.endsWith(".svg")) {
+        ui->mainView->addSvgToScene(filename);
+    } else if (image.load(filename)) {
         ui->mainView->addPixmapToScene(QPixmap::fromImage(image));
-        ui->mainView->updateSceneRect();
     }
+    ui->mainView->updateSceneRect();
 }
 
 void MainWindow::on_actionEngage_triggered() {

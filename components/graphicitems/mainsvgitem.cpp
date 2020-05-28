@@ -1,9 +1,9 @@
-#include "mainpixmapitem.h"
+#include "mainsvgitem.h"
 #include "maingraphicsitem.h"
 #include "../itempropertiesdialog.h"
 
-MainPixmapItem::MainPixmapItem(const QPixmap &pixmap, QGraphicsItem *parent) :
-    QGraphicsPixmapItem (pixmap, parent) {
+MainSvgItem::MainSvgItem(const QString &fileName, QGraphicsItem *parentItem) :
+    QGraphicsSvgItem(fileName, parentItem) {
     setData(SCALE, 1.0);
     setData(POSITION_X, 0.0);
     setData(POSITION_Y, 0.0);
@@ -11,7 +11,7 @@ MainPixmapItem::MainPixmapItem(const QPixmap &pixmap, QGraphicsItem *parent) :
     setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 }
 
-void MainPixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+void MainSvgItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (event->buttons() | Qt::LeftButton && mousePressed) {
         qreal x = (event->screenPos().x() - startScreenPos.x()) + startPosition.x();
         qreal y = (event->screenPos().y() - startScreenPos.y()) + startPosition.y();
@@ -22,27 +22,27 @@ void MainPixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     } else {
         mousePressed = false;
     }
-    QGraphicsPixmapItem::mouseMoveEvent(event);
+    QGraphicsSvgItem::mouseMoveEvent(event);
 }
 
-void MainPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void MainSvgItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         mousePressed = true;
         startScreenPos = event->screenPos();
         startPosition = pos();
         setSelected(true);
     }
-    QGraphicsPixmapItem::mousePressEvent(event);
+    QGraphicsSvgItem::mousePressEvent(event);
 }
 
-void MainPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void MainSvgItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         mousePressed = false;
     }
-    QGraphicsPixmapItem::mouseReleaseEvent(event);
+    QGraphicsSvgItem::mouseReleaseEvent(event);
 }
 
-void MainPixmapItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+void MainSvgItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         ItemPropertiesDialog itemPropertiesDialog;
         itemPropertiesDialog.setItem(this);
@@ -50,5 +50,5 @@ void MainPixmapItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
             itemPropertiesDialog.updateItem();
         }
     }
-    QGraphicsItem::mouseDoubleClickEvent(event);
+    QGraphicsSvgItem::mouseDoubleClickEvent(event);
 }

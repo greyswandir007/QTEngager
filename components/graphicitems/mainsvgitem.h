@@ -1,14 +1,13 @@
-#ifndef MAINPIXMAPITEM_H
-#define MAINPIXMAPITEM_H
+#ifndef MAINSVGITEM_H
+#define MAINSVGITEM_H
 
-#include <QGraphicsItem>
+#include <QGraphicsSvgItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QObject>
 
-class MainPixmapItem : public QGraphicsPixmapItem {
-
+class MainSvgItem : public QGraphicsSvgItem
+{
 public:
-    MainPixmapItem(const QPixmap &pixmap, QGraphicsItem *parent = nullptr);
+    MainSvgItem(const QString &fileName, QGraphicsItem *parentItem = nullptr);
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -22,4 +21,4 @@ private:
     QPointF startPosition;
 };
 
-#endif // MAINPIXMAPITEM_H
+#endif // MAINSVGITEM_H

@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include <components/graphicitems/mainpixmapitem.h>
+#include <components/graphicitems/mainsvgitem.h>
 
 MainView::MainView(QWidget *parent) : QGraphicsView(parent) {
     setMouseTracking(true);
@@ -17,16 +18,11 @@ void MainView::updateSceneRect() {
 }
 
 void MainView::addPixmapToScene(QPixmap pixmap) {
-    MainPixmapItem *item = new MainPixmapItem(pixmap);
-    item->setScale(mainScaleFactor * mainScale);
-    item->setData(MAIN_SCALE_FACTOR, mainScaleFactor);
-    item->setData(MAIN_SCALE, mainScale);
-    item->setData(SCALE, 1.0);
-    item->setData(POSITION_X, 0.0);
-    item->setData(POSITION_Y, 0.0);
-    item->setData(MAX_INTENSITY_VALUE, 255);
-    item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-    scene()->addItem(item);
+    addItemToScene(new MainPixmapItem(pixmap));
+}
+
+void MainView::addSvgToScene(QString filename) {
+    addItemToScene(new MainSvgItem(filename));
 }
 
 void MainView::changeScale(double scale) {
@@ -71,4 +67,11 @@ void MainView::wheelEvent(QWheelEvent *event) {
     changeScale(mainScale);
     emit scaleChanged(mainScale);
     event->accept();
+}
+
+void MainView::addItemToScene(QGraphicsItem *item) {
+    item->setScale(mainScaleFactor * mainScale);
+    item->setData(MAIN_SCALE_FACTOR, mainScaleFactor);
+    item->setData(MAIN_SCALE, mainScale);
+    scene()->addItem(item);
 }
