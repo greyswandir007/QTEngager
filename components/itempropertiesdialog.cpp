@@ -50,7 +50,9 @@ void ItemPropertiesDialog::updateItem() {
     qreal scale2 = mainItem->data(SCALE2).toDouble();
     qreal x = mainItem->data(POSITION_X).toDouble() * mainScale;
     qreal y = mainItem->data(POSITION_Y).toDouble() * mainScale;
+    qreal rotation = mainItem->data(ROTATION).toDouble();
 
     mainItem->setScale(mainScaleFactor * mainScale * scale * scale2);
     mainItem->setPos(x, y);
+    mainItem->setRotation(rotation);
 }
