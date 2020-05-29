@@ -55,7 +55,7 @@ private:
     QTextEdit *textLog;
     QProgressBar *engageProgress;
     QLabel *passedTimeLabel;
-    QLabel *leftTimeLable;
+    QLabel *leftTimeLabel;
     QTimer mainTimer;
 
     bool connectedFlag = false;

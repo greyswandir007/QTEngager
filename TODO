@@ -1,8 +1,8 @@
 Current version 0.01
 
 1. Add EngagerCommand class for commands with descriptions and delay between execution.
-2. Add EngagerSettings class for settings desription and different usage of engager, like engage, engage image, cut 
-   and so on wiht dependence on laser power(mW).
+2. Add EngagerSettings class for settings description and different usage of engager, like engage, engage image, cut
+   and so on with dependence on laser power(mW).
 3. Add VectorGraphEditor for visual control of elements placement with cm(inch) rulers (Base From GraphEdit project).
 4. Settings should be applied for each element or element group.
 5. There are should be sequence of program execution like engage image and then cut.

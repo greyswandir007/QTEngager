@@ -20,7 +20,6 @@ protected:
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    void setMainData();
     void createRootElement(const QString &fileName);
     void updateDimensions(QString width, QString height);
 

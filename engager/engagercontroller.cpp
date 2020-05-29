@@ -113,7 +113,7 @@ void EngagerController::setPassedTimeLabel(QLabel *passedTime) {
 }
 
 void EngagerController::setLeftTimeLabel(QLabel *leftTime) {
-    leftTimeLable = leftTime;
+    leftTimeLabel = leftTime;
 }
 
 void EngagerController::clearSequence() {
@@ -182,7 +182,7 @@ void EngagerController::on_timerEvent() {
         double forOneCommmand = static_cast<double>(tm) / engagerProgram->passedCommandCount();
         passedTimeLabel->setText(timeFromEpoch(tm, true));
         tm = static_cast<qint64>(forOneCommmand * engagerProgram->leftCommandCount());
-        leftTimeLable->setText(timeFromEpoch(tm, false));
+        leftTimeLabel->setText(timeFromEpoch(tm, false));
     }
 }
 
