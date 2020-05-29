@@ -70,6 +70,15 @@ void MainView::wheelEvent(QWheelEvent *event) {
 void MainView::addItemToScene(QGraphicsItem *item) {
     item->setData(MAIN_SCALE_FACTOR, mainScaleFactor);
     item->setData(MAIN_SCALE, mainScale);
+    item->setData(SCALE, 1.0);
+    item->setData(POSITION_X, 0.0);
+    item->setData(POSITION_Y, 0.0);
+    item->setData(MAX_INTENSITY_VALUE, 255);
+    item->setData(INVERT_INTENSITY, false);
+    item->setData(MIRROR_X, false);
+    item->setData(MIRROR_Y, false);
+    item->setData(ROTATION, 0.0);
+    item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
     item->setScale(mainScale * mainScaleFactor * item->data(SCALE).toDouble() * item->data(SCALE2).toDouble());
     scene()->addItem(item);
 }

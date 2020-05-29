@@ -9,7 +9,7 @@
 
 MainSvgItem::MainSvgItem(const QString &fileName, QGraphicsItem *parentItem) :
     QGraphicsSvgItem(parentItem) {
-    setMainData();
+    setData(SCALE2, 1.0);
     createRootElement(fileName);
 }
 
@@ -68,15 +68,6 @@ void MainSvgItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
         }
     }
     QGraphicsSvgItem::mouseDoubleClickEvent(event);
-}
-
-void MainSvgItem::setMainData() {
-    setData(SCALE, 1.0);
-    setData(SCALE2, 1.0);
-    setData(POSITION_X, 0.0);
-    setData(POSITION_Y, 0.0);
-    setData(MAX_INTENSITY_VALUE, 255);
-    setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 }
 
 void MainSvgItem::createRootElement(const QString &fileName) {

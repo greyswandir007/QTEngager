@@ -122,42 +122,35 @@ CommandQueue GCodeHelper::circleQueue(qreal x, qreal y, qreal r, int power, int 
     return commands;
 }
 
-CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, qreal scaleX, qreal scaleY,
+CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, qreal scale,
                                            int maxIntensity, bool invert) {
     CommandQueue commands;
     commands.append(startQueue());
     commands.append(GCodeConst::moveZero());
     commands.append(GCodeConst::setNewZeroCoordinate());
-    qreal stepX = 0.1 * scaleX;
+    qreal stepX = 0.1 * scale;
     qreal startX = x;
     qreal y1;
+    int sign = invert ? 1 : -1;
+    int add = invert ? 0 : 255;
     for (int i = 0; i < image.height(); i++) {
         y1 = y;
-        for (int k = 0; k < scaleY; k++) {
+        for (int k = 0; k < scale; k++) {
             x = startX;
             int j = 0;
             while (j < image.width()) {
-                int power;
-                if (invert) {
-                    power = QColor(image.pixel(j, i)).toHsl().lightness();
-                } else {
-                    power = 255 - QColor(image.pixel(j, i)).toHsl().lightness();
-                }
+                int power = add + sign * lightness(image, j, i);
                 while (j < image.width() && power == 0) {
                     x += stepX;
                     j++;
                     if (j < image.width()) {
-                        if (invert) {
-                            power = QColor(image.pixel(j, i)).toHsl().lightness();
-                        } else {
-                            power = 255 - QColor(image.pixel(j, i)).toHsl().lightness();
-                        }
+                        power = add + sign * lightness(image, j, i);
                     }
                 }
                 if (j < image.width()) {
                     commands.append(GCodeConst::move(x, y, MAX_SPEED, 0));
                     commands.append(GCodeConst::laserPower(static_cast<int>((maxIntensity/255.0) * power)));
-                    if (scaleX > 1) {
+                    if (scale > 1) {
                         commands.append(GCodeConst::move(x + stepX - 0.1, y, MAX_SPEED, 0));
                     }
                     commands.append(GCodeConst::laserPowerOff());
@@ -167,8 +160,12 @@ CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, qreal
             }
             y += 0.1;
         }
-        y = y1 + scaleY * 0.1;
+        y = y1 + scale * 0.1;
     }
     commands.append(centerQueue());
     return commands;
+}
+
+int GCodeHelper::lightness(QImage image, int x, int y) {
+    return QColor(image.pixel(x, y)).toHsl().lightness();
 }

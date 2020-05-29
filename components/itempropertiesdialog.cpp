@@ -9,9 +9,11 @@ ItemPropertiesDialog::ItemPropertiesDialog(QWidget *parent) :
     itemPropertyModel = new ItemPropertiesModel(nullptr);
     ui->propertiesTable->setModel(itemPropertyModel);
     mainItem = nullptr;
-    itemPropertyNames << tr("Scale") << tr("Position X, mm") << tr("Position Y, mm") << tr("Max Intensity value");
-    itemPropertyIndexes << SCALE << POSITION_X << POSITION_Y << MAX_INTENSITY_VALUE;
-    itemPropertyMultiply << false << true << true << false;
+    itemPropertyNames << tr("Scale") << tr("Position X, mm") << tr("Position Y, mm") << tr("Max Intensity value")
+                      << tr("Invert Intensity") << tr("Mirror X") << tr("Mirror Y") << tr("Rotation");
+    itemPropertyIndexes << SCALE << POSITION_X << POSITION_Y << MAX_INTENSITY_VALUE << INVERT_INTENSITY << MIRROR_X
+                        << MIRROR_Y << ROTATION;
+    itemPropertyMultiply << false << true << true << false << false << false << false << false;
 }
 
 ItemPropertiesDialog::~ItemPropertiesDialog() {
@@ -45,9 +47,10 @@ void ItemPropertiesDialog::updateItem() {
     qreal mainScaleFactor = mainItem->data(MAIN_SCALE_FACTOR).toDouble();
     qreal mainScale = mainItem->data(MAIN_SCALE).toDouble();
     qreal scale = mainItem->data(SCALE).toDouble();
+    qreal scale2 = mainItem->data(SCALE2).toDouble();
     qreal x = mainItem->data(POSITION_X).toDouble() * mainScale;
     qreal y = mainItem->data(POSITION_Y).toDouble() * mainScale;
 
-    mainItem->setScale(mainScaleFactor * mainScale * scale);
+    mainItem->setScale(mainScaleFactor * mainScale * scale * scale2);
     mainItem->setPos(x, y);
 }

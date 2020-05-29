@@ -4,12 +4,7 @@
 
 MainPixmapItem::MainPixmapItem(const QPixmap &pixmap, QGraphicsItem *parent) :
     QGraphicsPixmapItem (pixmap, parent) {
-    setData(SCALE, 1.0);
     setData(SCALE2, 1.0);
-    setData(POSITION_X, 0.0);
-    setData(POSITION_Y, 0.0);
-    setData(MAX_INTENSITY_VALUE, 255);
-    setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 }
 
 void MainPixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

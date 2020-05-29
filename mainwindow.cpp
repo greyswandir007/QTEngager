@@ -201,17 +201,18 @@ void MainWindow::on_actionEngage_triggered() {
         qreal scale = item->data(SCALE).toDouble();
         qreal x = item->data(POSITION_X).toDouble() * multiply;
         qreal y = item->data(POSITION_Y).toDouble() * multiply;
+        bool invert = item->data(INVERT_INTENSITY).toBool();
         int maxIndensity = item->data(MAX_INTENSITY_VALUE).toInt();
         const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem*>(item);
         if (pixmapItem != nullptr) {
-            sequence.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale, scale, maxIndensity));
+            sequence.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale, maxIndensity, invert));
         } else {
             MainSvgItem *svgItem = dynamic_cast<MainSvgItem*>(item);
             if (svgItem != nullptr) {
                 scale = 1;
                 QPixmap pixmap = svgItem->renderPixmap();
                 qDebug() << pixmap;
-                sequence.append(GCodeHelper::engageImageQueue(pixmap.toImage(), x, y, scale, scale, maxIndensity));
+                sequence.append(GCodeHelper::engageImageQueue(pixmap.toImage(), x, y, scale, maxIndensity, invert));
             }
         }
     }
