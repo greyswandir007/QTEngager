@@ -587,6 +587,8 @@
     </property>
     <addaction name="actionAdd_image"/>
     <addaction name="actionEngage"/>
+    <addaction name="separator"/>
+    <addaction name="actionClear"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEngager"/>
@@ -787,6 +789,11 @@
   <action name="actionEngage">
    <property name="text">
     <string>Engage</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>Clear</string>
    </property>
   </action>
  </widget>

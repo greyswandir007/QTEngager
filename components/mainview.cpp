@@ -27,6 +27,10 @@ void MainView::addSvgToScene(QString filename) {
     addItemToScene(item);
 }
 
+void MainView::clearScene() {
+    scene()->clear();
+}
+
 void MainView::changeScale(double scale) {
     mainScale = scale;
     scale = mainScale * mainScaleFactor;

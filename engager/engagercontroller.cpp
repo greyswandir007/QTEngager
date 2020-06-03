@@ -88,7 +88,9 @@ void EngagerController::runEngagerProgram(EngagerProgram *program) {
         }
         engagerProgram = program;
         sequenceTimeStart = QDateTime::currentDateTime();
-        sendCommandFromSequence(engagerProgram->pullCommand());
+        if (engagerProgram->hasCommand()) {
+            sendCommandFromSequence(engagerProgram->pullCommand());
+        }
     }
 }
 

@@ -45,6 +45,7 @@ private slots:
     void on_sendCommand_clicked();
     void on_actionAdd_image_triggered();
     void on_actionEngage_triggered();
+    void on_actionClear_triggered();
 
 private:
     Ui::MainWindow *ui;

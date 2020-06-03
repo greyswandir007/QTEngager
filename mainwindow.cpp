@@ -218,3 +218,7 @@ void MainWindow::on_actionEngage_triggered() {
     }
     engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
+
+void MainWindow::on_actionClear_triggered() {
+    ui->mainView->clearScene();
+}
