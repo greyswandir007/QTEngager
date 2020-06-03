@@ -589,6 +589,8 @@
     <addaction name="actionEngage"/>
     <addaction name="separator"/>
     <addaction name="actionClear"/>
+    <addaction name="actionOpen_2"/>
+    <addaction name="actionSave_2"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEngager"/>
@@ -794,6 +796,16 @@
   <action name="actionClear">
    <property name="text">
     <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionOpen_2">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave_2">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

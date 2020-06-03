@@ -3,12 +3,16 @@
 
 #include <QObject>
 #include "gcodehelper.h"
+#include "../components/mainview.h"
 
 class EngagerProgram
 {
 public:
     EngagerProgram();
+    EngagerProgram(const QString &filename);
     EngagerProgram(const CommandQueue &engagerProgram);
+    EngagerProgram(MainView *mainView);
+
     CommandQueue currentProgram() const;
     void setCurrentProgram(const CommandQueue &engagerProgram);
     void loadProgram(const QString &filename);
@@ -30,6 +34,8 @@ private:
     CommandQueue engagerProgram;
     int totalCount;
     int passedCount;
+
+    void commandQueueFromMainView(MainView *mainView);
 };
 
 #endif // ENGAGERPROGRAM_H

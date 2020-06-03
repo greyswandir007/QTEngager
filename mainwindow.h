@@ -46,11 +46,14 @@ private slots:
     void on_actionAdd_image_triggered();
     void on_actionEngage_triggered();
     void on_actionClear_triggered();
+    void on_actionSave_2_triggered();
+    void on_actionOpen_2_triggered();
 
 private:
     Ui::MainWindow *ui;
     EngagerController engagerController;
     LogDialog *logDialog;
+    EngagerProgram *mainProgram = nullptr;
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

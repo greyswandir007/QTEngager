@@ -42,6 +42,9 @@ MainWindow::~MainWindow() {
     engagerController.disconnect();
     delete ui;
     delete logDialog;
+    if (mainProgram) {
+        delete mainProgram;
+    }
 }
 
 void MainWindow::on_rectangleButton_clicked(){
@@ -195,30 +198,35 @@ void MainWindow::on_actionAdd_image_triggered() {
 }
 
 void MainWindow::on_actionEngage_triggered() {
-    CommandQueue sequence;
-    for(QGraphicsItem *item : ui->mainView->scene()->items()) {
-        qreal multiply = 0.1 / item->data(MAIN_SCALE_FACTOR).toDouble();
-        qreal scale = item->data(SCALE).toDouble();
-        qreal x = item->data(POSITION_X).toDouble() * multiply;
-        qreal y = item->data(POSITION_Y).toDouble() * multiply;
-        bool invert = item->data(INVERT_INTENSITY).toBool();
-        int maxIntensity = item->data(MAX_INTENSITY_VALUE).toInt();
-        const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem*>(item);
-        if (pixmapItem != nullptr) {
-            sequence.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale, maxIntensity, invert));
-        } else {
-            MainSvgItem *svgItem = dynamic_cast<MainSvgItem*>(item);
-            if (svgItem != nullptr) {
-                scale = 1;
-                QPixmap pixmap = svgItem->renderPixmap();
-                qDebug() << pixmap;
-                sequence.append(GCodeHelper::engageImageQueue(pixmap.toImage(), x, y, scale, maxIntensity, invert));
-            }
-        }
+    if (mainProgram) {
+        engagerController.runEngagerProgram(mainProgram);
+    } else {
+        engagerController.runEngagerProgram(new EngagerProgram(ui->mainView));
     }
-    engagerController.runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionClear_triggered() {
     ui->mainView->clearScene();
+    if (mainProgram) {
+        delete mainProgram;
+    }
+    mainProgram = nullptr;
+}
+
+void MainWindow::on_actionSave_2_triggered() {
+    QString filename = QFileDialog::getSaveFileName();
+    if(!filename.isEmpty()) {
+        EngagerProgram *engagerProgram = new EngagerProgram(ui->mainView);
+        engagerProgram->saveProgram(filename);
+    }
+}
+
+void MainWindow::on_actionOpen_2_triggered() {
+    QString filename = QFileDialog::getOpenFileName();
+    if(!filename.isEmpty()) {
+        if (mainProgram) {
+            delete mainProgram;
+        }
+        mainProgram = new EngagerProgram(filename);
+    }
 }
