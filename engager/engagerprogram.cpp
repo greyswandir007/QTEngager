@@ -118,15 +118,18 @@ void EngagerProgram::commandQueueFromMainView(MainView *mainView) {
         qreal x = item->data(POSITION_X).toDouble() * multiply;
         qreal y = item->data(POSITION_Y).toDouble() * multiply;
         bool invert = item->data(INVERT_INTENSITY).toBool();
+        bool mirrorX = item->data(MIRROR_X).toBool();
+        bool mirrorY = item->data(MIRROR_Y).toBool();
         int maxIntensity = item->data(MAX_INTENSITY_VALUE).toInt();
         const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem*>(item);
         if (pixmapItem != nullptr) {
-            engagerProgram.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale, maxIntensity, invert));
+            engagerProgram.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale,
+                                                                maxIntensity, invert, mirrorX, mirrorY));
         } else {
             MainSvgItem *svgItem = dynamic_cast<MainSvgItem*>(item);
             if (svgItem != nullptr) {
                 engagerProgram.append(GCodeHelper::engageImageQueue(svgItem->renderPixmap().toImage(), x, y, 1,
-                                                                    maxIntensity, invert));
+                                                                    maxIntensity, invert, mirrorX, mirrorY));
             }
         }
     }

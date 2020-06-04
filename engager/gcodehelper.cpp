@@ -123,31 +123,37 @@ CommandQueue GCodeHelper::circleQueue(qreal x, qreal y, qreal r, int power, int 
 }
 
 CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, qreal scale,
-                                           int maxIntensity, bool invert) {
+                                           int maxIntensity, bool invert, bool mirrorX, bool mirrorY) {
     CommandQueue commands;
     commands.append(startQueue());
     commands.append(GCodeConst::moveZero());
     commands.append(GCodeConst::setNewZeroCoordinate());
     qreal stepX = 0.1 * scale;
     qreal startX = x;
-    qreal y1;
     int sign = invert ? 1 : -1;
     int add = invert ? 0 : 255;
-    for (int i = 0; i < image.height(); i++) {
-        y1 = y;
+    bool heightComplete = false;
+    int dirX = mirrorX ? -1 : 1;
+    int dirY = mirrorY ? -1 : 1;
+    int i = mirrorY ? image.height() - 1 : 0;
+    while (!heightComplete) {
+        qreal y1 = y;
         for (int k = 0; k < scale; k++) {
             x = startX;
-            int j = 0;
-            while (j < image.width()) {
+            bool widthComplete = false;
+            int j = mirrorX ? image.width() - 1 : 0;
+            while (!widthComplete) {
                 int power = add + sign * lightness(image, j, i);
-                while (j < image.width() && power == 0) {
+                while (!widthComplete && power == 0) {
                     x += stepX;
-                    j++;
-                    if (j < image.width()) {
+                    j += dirX;
+                    if (j < 0 || j >= image.width()) {
+                        widthComplete = true;
+                    } else {
                         power = add + sign * lightness(image, j, i);
                     }
                 }
-                if (j < image.width()) {
+                if (!widthComplete) {
                     commands.append(GCodeConst::move(x, y, MAX_SPEED, 0));
                     commands.append(GCodeConst::laserPower(static_cast<int>((maxIntensity/255.0) * power)));
                     if (scale > 1) {
@@ -155,12 +161,19 @@ CommandQueue GCodeHelper::engageImageQueue(QImage image, qreal x, qreal y, qreal
                     }
                     commands.append(GCodeConst::laserPowerOff());
                     x += stepX;
-                    j++;
+                    j += dirX;
+                    if (j < 0 || j >= image.width()) {
+                        widthComplete = true;
+                    }
                 }
             }
             y += 0.1;
         }
         y = y1 + scale * 0.1;
+        i += dirY;
+        if (i < 0 || i >= image.height()) {
+            heightComplete = true;
+        }
     }
     commands.append(centerQueue());
     return commands;

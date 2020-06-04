@@ -24,7 +24,7 @@ public:
     static CommandQueue circleQueue(int speed);
     static CommandQueue circleQueue(qreal x, qreal y, qreal r, int power, int speed);
     static CommandQueue engageImageQueue(QImage image, qreal x, qreal y, qreal scale, int maxIntensity,
-                                         bool invert = false);
+                                         bool invert = false, bool mirrorX = false, bool mirrorY = false);
 
 private:
     static int lightness(QImage image, int x, int y);
