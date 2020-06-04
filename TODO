@@ -1,13 +1,17 @@
 Current version 0.01
 
-1. Add EngageCommand class for commands with descriptions and delay between execution.
-2. Add EngagerSettings class for settings desription and different usage of engager, like engage, engage image, cut 
-   and so on wiht dependence on laser power(mW).
-3. Add VectorGraphEditor for visual control of elements placement with cm(inch) rulers (Base From GraphEdit project).
+1. Add EngagerCommand delay between execution functionality.
+2. Add EngagerSettings class for settings description and different usage of engager, like engage, engage image, cut
+   and so on with dependence on laser power(mW).
+3. Add inch support for rulers.
 4. Settings should be applied for each element or element group.
 5. There are should be sequence of program execution like engage image and then cut.
 6. Project save load functionality.
 6. Pause, stop and safe, resume command for engage process (stop and safe means what you can resume process after 
    a while, even if you shutdown all and resume on next day laser moving on 0 position, and first command on resume 
    is to move to last position).
-7. Thinking...
+7. Mirrored image visualization.
+8. Rotated image engagement.
+9. GCode visualization.
+10. Simple operation window for test purpose.
+11. Thinking...

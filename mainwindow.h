@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "engagercontroller.h"
-#include "logdialog.h"
+#include "engager/engagercontroller.h"
+#include "engager/logdialog.h"
 
 #include <QMainWindow>
 #include <QtSerialPort/QSerialPort>
@@ -42,16 +42,21 @@ private slots:
     void on_actionStart_engage_triggered();
     void on_actionStop_engage_triggered();
     void on_moveButton_clicked();
-    void on_loadButton_clicked();
-
-    void on_engageButton_clicked();
+    void on_sendCommand_clicked();
+    void on_actionAdd_image_triggered();
+    void on_actionEngage_triggered();
+    void on_actionClear_triggered();
+    void on_actionSave_2_triggered();
+    void on_actionOpen_2_triggered();
 
 private:
-    void sendCommand(QString command);
     Ui::MainWindow *ui;
     EngagerController engagerController;
     LogDialog *logDialog;
-    QImage loadedImage;
+    EngagerProgram *mainProgram = nullptr;
+
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 };
 
 #endif // MAINWINDOW_H
