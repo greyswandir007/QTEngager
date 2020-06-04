@@ -10,32 +10,11 @@
 #include <components/graphicitems/mainsvgitem.h>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow) {
+    QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    logDialog = new LogDialog();
-    engagerController.setTextLog(logDialog->logTextEdit());
-    engagerController.setEngageProgressBar(ui->engageProgress);
-    engagerController.setPassedTimeLabel(ui->timePassedValue);
-    engagerController.setLeftTimeLabel(ui->timeLeftValue);
-    for (QString item : engagerController.getComPortList()) {
-        ui->comPortSelect->addItem(item);
-    }
-    connect(&engagerController, &EngagerController::connectedToEngager, this, &MainWindow::on_connectToEngager);
-    connect(&engagerController, &EngagerController::disconnectedFromEngager, this, &MainWindow::on_disconnectFromEngager);
-    connect(&engagerController, &EngagerController::comPortListUpdate, this, &MainWindow::on_comPortListUpdate);
-    ui->mainView->setScene(new QGraphicsScene());
-    QRect rec(ui->mainView->geometry());
-    ui->mainView->scene()->setSceneRect(0, 0, rec.width() - 3, rec.height() - 3);
-
-    connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
-    connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->mainView, SLOT(changeScale(double)));
-
-    connect(ui->verticalRuler, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
-    connect(ui->verticalRuler, SIGNAL(scaleChanged(double)), ui->mainView, SLOT(changeScale(double)));
-
-    connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
-    connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
+    setupEngageController();
+    connectEvents();
+    addStatusBarWidgets();
 }
 
 MainWindow::~MainWindow() {
@@ -228,5 +207,52 @@ void MainWindow::on_actionOpen_2_triggered() {
             delete mainProgram;
         }
         mainProgram = new EngagerProgram(filename);
+    }
+}
+
+void MainWindow::connectEvents() {
+    connect(&engagerController, &EngagerController::connectedToEngager, this, &MainWindow::on_connectToEngager);
+    connect(&engagerController, &EngagerController::disconnectedFromEngager, this, &MainWindow::on_disconnectFromEngager);
+    connect(&engagerController, &EngagerController::comPortListUpdate, this, &MainWindow::on_comPortListUpdate);
+
+    connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
+    connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->mainView, SLOT(changeScale(double)));
+
+    connect(ui->verticalRuler, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
+    connect(ui->verticalRuler, SIGNAL(scaleChanged(double)), ui->mainView, SLOT(changeScale(double)));
+
+    connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
+    connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
+}
+
+void MainWindow::addStatusBarWidgets() {
+    QLabel *timePassedLabel = new QLabel();
+    QLabel *timeLeftLabel = new QLabel();
+    timePassedLabel->setText(tr("Time passed: "));
+    timeLeftLabel->setText(tr("Time left: "));
+    timePassedLabel->setMaximumWidth(70);
+    timePassedLabel->setMinimumWidth(70);
+    timeLeftLabel->setMaximumWidth(70);
+    timeLeftLabel->setMinimumWidth(70);
+    timePassed->setMaximumWidth(70);
+    timePassed->setMinimumWidth(70);
+    timeLeft->setMaximumWidth(50);
+    timeLeft->setMinimumWidth(50);
+    timePassed->setText(" ");
+    timeLeft->setText(" ");
+    ui->statusBar->addWidget(timePassedLabel);
+    ui->statusBar->addWidget(timePassed);
+    ui->statusBar->addWidget(timeLeftLabel);
+    ui->statusBar->addWidget(timeLeft);
+}
+
+void MainWindow::setupEngageController() {
+    logDialog = new LogDialog();
+    engagerController.setTextLog(logDialog->logTextEdit());
+    engagerController.setEngageProgressBar(ui->engageProgress);
+    engagerController.setPassedTimeLabel(timePassed);
+    engagerController.setLeftTimeLabel(timeLeft);
+    for (QString item : engagerController.getComPortList()) {
+        ui->comPortSelect->addItem(item);
     }
 }

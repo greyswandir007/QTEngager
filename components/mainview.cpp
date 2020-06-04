@@ -11,6 +11,8 @@
 
 MainView::MainView(QWidget *parent) : QGraphicsView(parent) {
     setMouseTracking(true);
+    setScene(new QGraphicsScene());
+    updateSceneRect();
 }
 
 void MainView::updateSceneRect() {

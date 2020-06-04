@@ -54,6 +54,12 @@ private:
     EngagerController engagerController;
     LogDialog *logDialog;
     EngagerProgram *mainProgram = nullptr;
+    QLabel *timePassed = new QLabel();
+    QLabel *timeLeft = new QLabel();
+
+    void connectEvents();
+    void addStatusBarWidgets();
+    void setupEngageController();
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
