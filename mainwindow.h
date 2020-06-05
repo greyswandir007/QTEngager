@@ -8,6 +8,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QFileDialog>
+#include <engager/commandcreator.h>
 
 namespace Ui {
 class MainWindow;
@@ -51,11 +52,12 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    EngagerController engagerController;
+    EngagerController *engagerController;
     LogDialog *logDialog;
     EngagerProgram *mainProgram = nullptr;
     QLabel *timePassed = new QLabel();
     QLabel *timeLeft = new QLabel();
+    CommandCreator *creator;
 
     void connectEvents();
     void addStatusBarWidgets();

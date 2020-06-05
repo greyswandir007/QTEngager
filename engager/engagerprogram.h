@@ -2,7 +2,7 @@
 #define ENGAGERPROGRAM_H
 
 #include <QObject>
-#include "gcodehelper.h"
+#include "icommandcreator.h"
 #include "../components/mainview.h"
 
 class EngagerProgram
@@ -11,7 +11,7 @@ public:
     EngagerProgram();
     EngagerProgram(const QString &filename);
     EngagerProgram(const CommandQueue &engagerProgram);
-    EngagerProgram(MainView *mainView);
+    EngagerProgram(MainView *mainView, ICommandCreator *creator);
 
     CommandQueue currentProgram() const;
     void setCurrentProgram(const CommandQueue &engagerProgram);
@@ -35,7 +35,7 @@ private:
     int totalCount;
     int passedCount;
 
-    void commandQueueFromMainView(MainView *mainView);
+    void commandQueueFromMainView(MainView *mainView, ICommandCreator *creator);
 };
 
 #endif // ENGAGERPROGRAM_H

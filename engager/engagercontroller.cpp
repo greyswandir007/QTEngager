@@ -1,8 +1,8 @@
 #include "engagercontroller.h"
-#include "gcodehelper.h"
 #include <QDebug>
 
-EngagerController::EngagerController() {
+EngagerController::EngagerController(ICommandCreator *creator) {
+    this->creator = creator;
     connect(&serialPort, &QSerialPort::readyRead, this, &EngagerController::on_serialPortRead);
     connect(&mainTimer, &QTimer::timeout, this, &EngagerController::on_timerEvent);
     updateComPortList();
@@ -124,7 +124,7 @@ void EngagerController::clearSequence() {
             delete engagerProgram;
         }
         engagerProgram = new EngagerProgram();
-        engagerProgram->setCurrentProgram(GCodeHelper::centerQueue());
+        engagerProgram->setCurrentProgram(creator->centerQueue());
         sendCommandFromSequence(engagerProgram->pullCommand());
     }
 }
@@ -144,7 +144,7 @@ void EngagerController::on_serialPortRead() {
             clearLog();
             addLog("Connected to engager on port: " + serialPort.portName());
             emit connectedToEngager();
-            GCodeHelper::reset();
+            creator->reset();
             sendCommand("$21 P-2\x0A");
         }
     } else if (received.endsWith("ok\r\n")) {

@@ -24,8 +24,8 @@ EngagerProgram::EngagerProgram(const CommandQueue &engagerProgram) {
     passedCount = 0;
 }
 
-EngagerProgram::EngagerProgram(MainView *mainView) {
-    commandQueueFromMainView(mainView);
+EngagerProgram::EngagerProgram(MainView *mainView, ICommandCreator *creator) {
+    commandQueueFromMainView(mainView, creator);
 }
 
 CommandQueue EngagerProgram::currentProgram() const {
@@ -83,8 +83,7 @@ void EngagerProgram::addCommand(const CommandQueue &command) {
 EngagerCommand EngagerProgram::pullCommand() {
     EngagerCommand command;
     if (!engagerProgram.isEmpty()) {
-        command = engagerProgram.at(0);
-        engagerProgram.removeAt(0);
+        command = engagerProgram.dequeue();
         passedCount++;
     }
     return command;
@@ -110,7 +109,7 @@ float EngagerProgram::getCurrentProgress() const {
     return engagerProgram.isEmpty() ? 0 : passedCount * 100.0f / static_cast<float>(totalCount);
 }
 
-void EngagerProgram::commandQueueFromMainView(MainView *mainView) {
+void EngagerProgram::commandQueueFromMainView(MainView *mainView, ICommandCreator *creator) {
     engagerProgram.clear();
     for(QGraphicsItem *item : mainView->scene()->items()) {
         qreal multiply = 0.1 / item->data(MAIN_SCALE_FACTOR).toDouble();
@@ -123,13 +122,13 @@ void EngagerProgram::commandQueueFromMainView(MainView *mainView) {
         int maxIntensity = item->data(MAX_INTENSITY_VALUE).toInt();
         const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem*>(item);
         if (pixmapItem != nullptr) {
-            engagerProgram.append(GCodeHelper::engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale,
-                                                                maxIntensity, invert, mirrorX, mirrorY));
+            engagerProgram.append(creator->engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale,
+                                                            maxIntensity, invert, mirrorX, mirrorY));
         } else {
             MainSvgItem *svgItem = dynamic_cast<MainSvgItem*>(item);
             if (svgItem != nullptr) {
-                engagerProgram.append(GCodeHelper::engageImageQueue(svgItem->renderPixmap().toImage(), x, y, 1,
-                                                                    maxIntensity, invert, mirrorX, mirrorY));
+                engagerProgram.append(creator->engageImageQueue(svgItem->renderPixmap().toImage(), x, y, 1,
+                                                                maxIntensity, invert, mirrorX, mirrorY));
             }
         }
     }

@@ -3,6 +3,7 @@
 
 #include "engagercommand.h"
 #include "engagerprogram.h"
+#include "icommandcreator.h"
 
 #include <QObject>
 #include <QTextEdit>
@@ -21,7 +22,7 @@ public:
         OFF, LOW, MIDDLE, HIGH
     };
 
-    EngagerController();
+    EngagerController(ICommandCreator *creator);
     void sendCommand(const QString &command);
     void sendCommand(const EngagerCommand &command);
     void updateComPortList();
@@ -81,6 +82,7 @@ private:
     void clearLog();
 
     QString timeFromEpoch(qint64 time, bool milliseconds);
+    ICommandCreator *creator;
 };
 
 #endif // ENGAGERCONTROLLER_H

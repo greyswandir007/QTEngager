@@ -34,11 +34,11 @@ SOURCES += \
     engager/engagercommand.cpp \
     engager/engagercontroller.cpp \
     engager/engagerprogram.cpp \
-    engager/gcodeconst.cpp \
-    engager/gcodehelper.cpp \
     engager/logdialog.cpp \
     components/graphicitems/mainpixmapitem.cpp \
-    components/graphicitems/mainsvgitem.cpp
+    components/graphicitems/mainsvgitem.cpp \
+    engager/gcodecommands.cpp \
+    engager/commandcreator.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -49,12 +49,14 @@ HEADERS += \
     engager/engagercommand.h \
     engager/engagercontroller.h \
     engager/engagerprogram.h \
-    engager/gcodeconst.h \
-    engager/gcodehelper.h \
     engager/logdialog.h \
     components/graphicitems/mainpixmapitem.h \
     components/graphicitems/maingraphicsitem.h \
-    components/graphicitems/mainsvgitem.h
+    components/graphicitems/mainsvgitem.h \
+    engager/gcodecommands.h \
+    engager/commandcreator.h \
+    engager/igcodecommands.h \
+    engager/icommandcreator.h
 
 FORMS += mainwindow.ui \
     components/itempropertiesdialog.ui \
