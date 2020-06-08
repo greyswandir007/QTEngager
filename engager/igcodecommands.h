@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQueue>
+#include <QRectF>
 #include "engagercommand.h"
 
 typedef QQueue<EngagerCommand> CommandQueue;
@@ -46,6 +47,8 @@ public:
     virtual QRectF boundingRect(CommandQueue queue) = 0;
 
     virtual int maxSpeed() = 0;
+
+    virtual QPixmap createPixmap(CommandQueue queue, QRectF boundingRect = QRectF()) = 0;
 };
 
 #endif // IGCODECOMMANDS_H

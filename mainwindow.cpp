@@ -32,13 +32,13 @@ void MainWindow::on_rectangleButton_clicked(){
     CommandQueue sequence = creator->rectangleQueue(ui->rectangleX->value(), ui->rectangleY->value(),
                                                     ui->rectangleW->value(), ui->rectangleH->value(),
                                                     ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_circleButton_clicked(){
     CommandQueue sequence = creator->circleQueue(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
                                                  ui->circlePower->value(), ui->circleSpeed->value());
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_connectToEngager() {
@@ -92,22 +92,22 @@ void MainWindow::on_actionLog_triggered() {
 
 void MainWindow::on_actionMove_left_triggered() {
     CommandQueue sequence = creator->moveXQueue(10);
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_right_triggered() {
     CommandQueue sequence = creator->moveXQueue(-10);
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_forward_triggered() {
     CommandQueue sequence = creator->moveYQueue(10);
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionMove_backward_triggered() {
     CommandQueue sequence = creator->moveYQueue(-10);
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionLaser_off_triggered() {
@@ -134,12 +134,12 @@ void MainWindow::on_actionEngage_rect_triggered() {
     CommandQueue sequence = creator->rectangleQueue(ui->rectangleX->value(), ui->rectangleY->value(),
                                                     ui->rectangleW->value(), ui->rectangleH->value(),
                                                     ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionStart_engage_triggered() {
     CommandQueue sequence = creator->circleQueue(ui->circleSpeed->value());
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::on_actionStop_engage_triggered() {
@@ -148,7 +148,7 @@ void MainWindow::on_actionStop_engage_triggered() {
 
 void MainWindow::on_moveButton_clicked() {
     CommandQueue sequence = creator->moveToQueue(ui->moveX->value(), ui->moveY->value(), ui->moveSpeed->value());
-    engagerController->runEngagerProgram(new EngagerProgram(sequence));
+    runEngagerProgram(new EngagerProgram(sequence));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
@@ -176,9 +176,9 @@ void MainWindow::on_actionAdd_image_triggered() {
 
 void MainWindow::on_actionEngage_triggered() {
     if (mainProgram) {
-        engagerController->runEngagerProgram(mainProgram);
+        runEngagerProgram(mainProgram);
     } else {
-        engagerController->runEngagerProgram(new EngagerProgram(ui->mainView, creator));
+        runEngagerProgram(new EngagerProgram(ui->mainView, creator));
     }
 }
 
@@ -205,6 +205,7 @@ void MainWindow::on_actionOpen_2_triggered() {
             delete mainProgram;
         }
         mainProgram = new EngagerProgram(filename);
+
     }
 }
 
@@ -221,6 +222,15 @@ void MainWindow::connectEvents() {
 
     connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->horizontalRuler, SLOT(changeScale(double)));
     connect(ui->mainView, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
+
+    connect(ui->horizontalGCodeRuler, SIGNAL(scaleChanged(double)), ui->verticalGCodeRuler, SLOT(changeScale(double)));
+    connect(ui->horizontalGCodeRuler, SIGNAL(scaleChanged(double)), ui->gcodeView, SLOT(changeScale(double)));
+
+    connect(ui->verticalGCodeRuler, SIGNAL(scaleChanged(double)), ui->horizontalGCodeRuler, SLOT(changeScale(double)));
+    connect(ui->verticalGCodeRuler, SIGNAL(scaleChanged(double)), ui->gcodeView, SLOT(changeScale(double)));
+
+    connect(ui->gcodeView, SIGNAL(scaleChanged(double)), ui->verticalGCodeRuler, SLOT(changeScale(double)));
+    connect(ui->gcodeView, SIGNAL(scaleChanged(double)), ui->horizontalGCodeRuler, SLOT(changeScale(double)));
 }
 
 void MainWindow::addStatusBarWidgets() {
@@ -254,5 +264,25 @@ void MainWindow::setupEngageController() {
     engagerController->setLeftTimeLabel(timeLeft);
     for (QString item : engagerController->getComPortList()) {
         ui->comPortSelect->addItem(item);
+    }
+}
+
+void MainWindow::runEngagerProgram(EngagerProgram *program) {
+    showGCode(program);
+    engagerController->runEngagerProgram(program);
+}
+
+void MainWindow::showGCode(EngagerProgram *program) {
+    ui->gcodeView->clearScene();
+    ui->gcodeView->updateSceneRect();
+    ui->gcodeView->addPixmapToScene(creator->gcodeCommands()->createPixmap(program->currentProgram()));
+    ui->gcodeText->setText(program->programText());
+}
+
+void MainWindow::on_actionCreate_GCode_triggered() {
+    if (mainProgram) {
+        runEngagerProgram(mainProgram);
+    } else {
+        runEngagerProgram(new EngagerProgram(ui->mainView, creator));
     }
 }

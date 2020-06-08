@@ -60,11 +60,7 @@ void EngagerProgram::loadProgram(const QString &filename) {
 void EngagerProgram::saveProgram(const QString &filename) {
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly)) {
-        QString program = "";
-        for(EngagerCommand command : engagerProgram) {
-            program += command.getCommand();
-        }
-        file.write(program.toLatin1());
+        file.write(programText().toLatin1());
         file.close();
     }
 }
@@ -73,6 +69,14 @@ void EngagerProgram::newProgram() {
     engagerProgram.clear();
     totalCount = 0;
     passedCount = 0;
+}
+
+QString EngagerProgram::programText() const {
+    QString program = "";
+    for(EngagerCommand command : engagerProgram) {
+        program += command.getCommand();
+    }
+    return program;
 }
 
 void EngagerProgram::addCommand(const CommandQueue &command) {

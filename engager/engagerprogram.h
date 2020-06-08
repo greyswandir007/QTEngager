@@ -18,6 +18,7 @@ public:
     void loadProgram(const QString &filename);
     void saveProgram(const QString &filename);
     void newProgram();
+    QString programText() const;
 
     void addCommand(const CommandQueue &command);
 

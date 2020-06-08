@@ -46,6 +46,12 @@ public:
     virtual QRectF boundingRect(CommandQueue queue);
 
     virtual int maxSpeed();
+
+    virtual QPixmap createPixmap(CommandQueue queue, QRectF boundingRect = QRectF());
+
+protected:
+
+    QString getCoord(QString cmd, QString coord);
 };
 
 #endif // GCODECOMMANDS_H

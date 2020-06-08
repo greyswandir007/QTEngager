@@ -49,6 +49,7 @@ private slots:
     void on_actionClear_triggered();
     void on_actionSave_2_triggered();
     void on_actionOpen_2_triggered();
+    void on_actionCreate_GCode_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -62,6 +63,8 @@ private:
     void connectEvents();
     void addStatusBarWidgets();
     void setupEngageController();
+    void runEngagerProgram(EngagerProgram *program);
+    void showGCode(EngagerProgram *program);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
