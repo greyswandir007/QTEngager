@@ -24,6 +24,7 @@ public:
     virtual CommandQueue circleQueue(qreal x, qreal y, qreal r, int power, int speed) = 0;
     virtual CommandQueue engageImageQueue(QImage image, qreal x, qreal y, qreal scale, int maxIntensity,
                                           bool invert = false, bool mirrorX = false, bool mirrorY = false) = 0;
+    virtual QRectF imageRect(QImage image, qreal x, qreal y, qreal scale) = 0;
 
     virtual IGCodeCommands *gcodeCommands() = 0;
 };

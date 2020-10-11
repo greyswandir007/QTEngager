@@ -88,9 +88,9 @@ CommandQueue CommandCreator::rectangleQueue(qreal x, qreal y, qreal w, qreal h, 
     commands.append(startQueue());
     commands.append(gcode->move(x, y, gcode->maxSpeed()));
     commands.append(gcode->laserPower(power, power2));
-    commands.append(gcode->move(x+w, y, speed));
-    commands.append(gcode->move(x+w, y+h, speed));
-    commands.append(gcode->move(x, y+h, speed));
+    commands.append(gcode->move(x + w, y, speed));
+    commands.append(gcode->move(x + w, y + h, speed));
+    commands.append(gcode->move(x, y + h, speed));
     commands.append(gcode->move(x, y, speed));
     commands.append(gcode->laserPowerOff());
     commands.append(centerQueue());
@@ -155,10 +155,10 @@ CommandQueue CommandCreator::engageImageQueue(QImage image, qreal x, qreal y, qr
                     }
                 }
                 if (!widthComplete) {
-                    commands.append(gcode->move(x, y, gcode->maxSpeed(), 0));
-                    commands.append(gcode->laserPower(static_cast<int>((maxIntensity/255.0) * power)));
+                    commands.append(gcode->move(x, -y, gcode->maxSpeed(), 0));
+                    commands.append(gcode->laserPower(static_cast<int>((maxIntensity / 255.0) * power)));
                     if (scale > 1) {
-                        commands.append(gcode->move(x + stepX - 0.1, y, gcode->maxSpeed(), 0));
+                        commands.append(gcode->move(x + stepX - 0.1, -y, gcode->maxSpeed(), 0));
                     }
                     commands.append(gcode->laserPowerOff());
                     x += stepX;
@@ -178,6 +178,16 @@ CommandQueue CommandCreator::engageImageQueue(QImage image, qreal x, qreal y, qr
     }
     commands.append(centerQueue());
     return commands;
+}
+
+QRectF CommandCreator::imageRect(QImage image, qreal x, qreal y, qreal scale) {
+    QRectF rect;
+    qreal height = scale * 0.1 * image.height();
+    rect.setLeft(x);
+    rect.setTop(y - height);
+    rect.setWidth(scale * 0.1 * image.width());
+    rect.setHeight(height);
+    return rect;
 }
 
 IGCodeCommands *CommandCreator::gcodeCommands() {

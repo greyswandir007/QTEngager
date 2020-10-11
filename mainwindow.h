@@ -50,6 +50,7 @@ private slots:
     void on_actionSave_2_triggered();
     void on_actionOpen_2_triggered();
     void on_actionCreate_GCode_triggered();
+    void on_actionRecentImageAdd_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -59,12 +60,14 @@ private:
     QLabel *timePassed = new QLabel();
     QLabel *timeLeft = new QLabel();
     CommandCreator *creator;
+    QStringList recentImagePaths;
 
     void connectEvents();
     void addStatusBarWidgets();
     void setupEngageController();
     void runEngagerProgram(EngagerProgram *program);
     void showGCode(EngagerProgram *program);
+    void addImage(QString filename);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

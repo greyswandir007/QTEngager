@@ -96,17 +96,15 @@ EngagerCommand GCodeCommands::relativeCoordinate() {
 }
 
 EngagerCommand GCodeCommands::setNewZeroCoordinate() {
-    return EngagerCommand("G91\x0A", 0, QObject::tr("Set this point as absolute (0, 0)"));
+    return EngagerCommand("G92\x0A", 0, QObject::tr("Set this point as absolute (0, 0)"));
 }
 
 EngagerCommand GCodeCommands::laserPower(int power1, int power2) {
-    QString command;
     if (power1 > 0) {
         return EngagerCommand(QString().sprintf("M03 L%i P%i\x0A", power1, power2), 0,
                               QObject::tr("Laser power (L%1, P%2)").arg(power1).arg(power2));
-    } else {
-        return laserPowerOff();
     }
+    return laserPowerOff();
 }
 
 EngagerCommand GCodeCommands::laserPower(int power) {
@@ -118,9 +116,8 @@ EngagerCommand GCodeCommands::laserPower(int power) {
     if (power > 0) {
         return EngagerCommand(QString().sprintf("M03 L%i P%1.4f\x0A", power, power2), 0,
                               QObject::tr("Laser power (L%1, P%2)").arg(power).arg(power2));
-    } else {
-        return laserPowerOff();
     }
+    return laserPowerOff();
 }
 
 EngagerCommand GCodeCommands::laserPowerOff() {
@@ -148,7 +145,7 @@ QRectF GCodeCommands::boundingRect(CommandQueue queue) {
     qreal maxY = 0;
     qreal lastX = 0;
     qreal lastY = 0;
-    for(EngagerCommand command : queue) {
+    for (EngagerCommand command : queue) {
         QString cmd = command.getCommand();
         if (cmd.startsWith("G00")) {
             QString Xstr = getCoord(cmd, "X");
@@ -225,7 +222,7 @@ QPixmap GCodeCommands::createPixmap(CommandQueue queue, QRectF boundingRect) {
     qreal lastX = 0;
     qreal lastY = 0;
     QPainter painter(&pixmap);
-    for(EngagerCommand command : queue) {
+    for (EngagerCommand command : queue) {
         QString cmd = command.getCommand();
         qreal x = lastX;
         qreal y = lastY;
@@ -271,7 +268,8 @@ QPixmap GCodeCommands::createPixmap(CommandQueue queue, QRectF boundingRect) {
         }
         if (intensity != 0) {
             painter.setPen(QColor(255 - intensity, 255 - intensity, 255 - intensity));
-            painter.drawLine(static_cast<int>(lastX), static_cast<int>(lastY), static_cast<int>(x), static_cast<int>(y));
+            painter.drawLine(static_cast<int>(lastX), static_cast<int>(lastY), static_cast<int>(x),
+                             static_cast<int>(y));
         }
         lastX = x;
         lastY = y;

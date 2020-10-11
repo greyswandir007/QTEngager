@@ -785,7 +785,14 @@
     <property name="title">
      <string>Figures</string>
     </property>
+    <widget class="QMenu" name="menuAdd_recent_image">
+     <property name="title">
+      <string>Add recent image</string>
+     </property>
+     <addaction name="actionNo_recent_items"/>
+    </widget>
     <addaction name="actionAdd_image"/>
+    <addaction name="menuAdd_recent_image"/>
     <addaction name="actionEngage"/>
     <addaction name="actionCreate_GCode"/>
     <addaction name="separator"/>
@@ -1012,6 +1019,14 @@
   <action name="actionCreate_GCode">
    <property name="text">
     <string>Create GCode</string>
+   </property>
+  </action>
+  <action name="actionNo_recent_items">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>No recent items</string>
    </property>
   </action>
  </widget>

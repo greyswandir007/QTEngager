@@ -3,13 +3,24 @@
 #include <QDebug>
 #include <QGraphicsItem>
 #include <QImageReader>
+#include <QSettings>
 #include "components/graphicitems/maingraphicsitem.h"
 #include <components/graphicitems/mainsvgitem.h>
 #include <engager/gcodecommands.h>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow) {
+        QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    QSettings settings("QTEngager", "QTEngager");
+    settings.sync();
+    int size = settings.beginReadArray("recentImagePaths");
+    for (int i = 0; i < size; i++) {
+        settings.setArrayIndex(i);
+        QString filename = settings.value("imagePath").toString();
+        if (!filename.isEmpty()) {
+            addRecentImagePath(filename);
+        }
+    }
     setupEngageController();
     connectEvents();
     addStatusBarWidgets();
@@ -17,6 +28,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow() {
     engagerController->disconnect();
+    QSettings settings("QTEngager", "QTEngager");
+    settings.sync();
+    settings.beginWriteArray("recentImagePaths", recentImagePaths.size());
+    for (int i = 0; i < recentImagePaths.size(); i++) {
+        settings.setArrayIndex(i);
+        settings.setValue("imagePath", recentImagePaths.at(i));
+    }
     delete ui;
     delete logDialog;
     if (mainProgram) {
@@ -24,7 +42,7 @@ MainWindow::~MainWindow() {
     }
 }
 
-void MainWindow::on_rectangleButton_clicked(){
+void MainWindow::on_rectangleButton_clicked() {
     int power2 = 0;
     if (ui->rectanglePower->value() > 10) {
         power2 = 2800;
@@ -35,7 +53,7 @@ void MainWindow::on_rectangleButton_clicked(){
     runEngagerProgram(new EngagerProgram(sequence));
 }
 
-void MainWindow::on_circleButton_clicked(){
+void MainWindow::on_circleButton_clicked() {
     CommandQueue sequence = creator->circleQueue(ui->circleX->value(), ui->circleY->value(), ui->circleR->value(),
                                                  ui->circlePower->value(), ui->circleSpeed->value());
     runEngagerProgram(new EngagerProgram(sequence));
@@ -127,14 +145,59 @@ void MainWindow::on_actionLaser_high_triggered() {
 }
 
 void MainWindow::on_actionEngage_rect_triggered() {
-    int power2 = 0;
-    if (ui->rectanglePower->value() > 10) {
-        power2 = 2800;
+    bool first = true;
+    qreal minX = 0;
+    qreal minY = 0;
+    qreal maxX = 0;
+    qreal maxY = 0;
+    for (QGraphicsItem *item : ui->mainView->scene()->items()) {
+        qreal multiply = 0.1 / item->data(MAIN_SCALE_FACTOR).toDouble();
+        qreal scale = item->data(SCALE).toDouble();
+        qreal x = item->data(POSITION_X).toDouble() * multiply;
+        qreal y = item->data(POSITION_Y).toDouble() * multiply;
+        const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem *>(item);
+        QRectF rect;
+        if (pixmapItem != nullptr) {
+            rect = creator->imageRect(pixmapItem->pixmap().toImage(), x, y, scale);
+        } else {
+            MainSvgItem *svgItem = dynamic_cast<MainSvgItem *>(item);
+            if (svgItem != nullptr) {
+                rect = creator->imageRect(svgItem->renderPixmap().toImage(), x, y, 1);
+            }
+        }
+        if (!rect.isEmpty()) {
+            if (first) {
+                first = false;
+                minX = rect.left();
+                minY = rect.top();
+                maxX = rect.right();
+                maxY = rect.bottom();
+            } else {
+                if (minX > rect.left()) {
+                    minX = rect.left();
+                }
+                if (maxX < rect.right()) {
+                    maxX = rect.right();
+                }
+                if (minY > rect.top()) {
+                    minY = rect.top();
+                }
+                if (maxY < rect.bottom()) {
+                    maxY = rect.bottom();
+                }
+            }
+        }
     }
-    CommandQueue sequence = creator->rectangleQueue(ui->rectangleX->value(), ui->rectangleY->value(),
-                                                    ui->rectangleW->value(), ui->rectangleH->value(),
-                                                    ui->rectanglePower->value(), power2, ui->rectangleSpeed->value());
-    runEngagerProgram(new EngagerProgram(sequence));
+    if (!first) {
+        int power2 = 0;
+        if (ui->rectanglePower->value() > 10) {
+            power2 = 2800;
+        }
+        CommandQueue sequence = creator->rectangleQueue(minX, minY, maxX - minX, maxY - minY,
+                                                        ui->rectanglePower->value(), power2,
+                                                        ui->rectangleSpeed->value());
+        runEngagerProgram(new EngagerProgram(sequence));
+    }
 }
 
 void MainWindow::on_actionStart_engage_triggered() {
@@ -165,21 +228,16 @@ void MainWindow::on_sendCommand_clicked() {
 
 void MainWindow::on_actionAdd_image_triggered() {
     QString filename = QFileDialog::getOpenFileName();
-    QImage image;
-    if (filename.endsWith(".svg")) {
-        ui->mainView->addSvgToScene(filename);
-    } else if (image.load(filename)) {
-        ui->mainView->addPixmapToScene(QPixmap::fromImage(image));
+    if (!filename.isEmpty()) {
+        if (!recentImagePaths.contains(filename)) {
+            addRecentImagePath(filename);
+        }
+        addImage(filename);
     }
-    ui->mainView->updateSceneRect();
 }
 
 void MainWindow::on_actionEngage_triggered() {
-    if (mainProgram) {
-        runEngagerProgram(mainProgram);
-    } else {
-        runEngagerProgram(new EngagerProgram(ui->mainView, creator));
-    }
+    runEngagerProgram(mainProgram ? mainProgram : new EngagerProgram(ui->mainView, creator));
 }
 
 void MainWindow::on_actionClear_triggered() {
@@ -192,7 +250,7 @@ void MainWindow::on_actionClear_triggered() {
 
 void MainWindow::on_actionSave_2_triggered() {
     QString filename = QFileDialog::getSaveFileName();
-    if(!filename.isEmpty()) {
+    if (!filename.isEmpty()) {
         EngagerProgram *engagerProgram = new EngagerProgram(ui->mainView, creator);
         engagerProgram->saveProgram(filename);
     }
@@ -200,18 +258,18 @@ void MainWindow::on_actionSave_2_triggered() {
 
 void MainWindow::on_actionOpen_2_triggered() {
     QString filename = QFileDialog::getOpenFileName();
-    if(!filename.isEmpty()) {
+    if (!filename.isEmpty()) {
         if (mainProgram) {
             delete mainProgram;
         }
         mainProgram = new EngagerProgram(filename);
-
     }
 }
 
 void MainWindow::connectEvents() {
     connect(engagerController, &EngagerController::connectedToEngager, this, &MainWindow::on_connectToEngager);
-    connect(engagerController, &EngagerController::disconnectedFromEngager, this, &MainWindow::on_disconnectFromEngager);
+    connect(engagerController, &EngagerController::disconnectedFromEngager, this,
+            &MainWindow::on_disconnectFromEngager);
     connect(engagerController, &EngagerController::comPortListUpdate, this, &MainWindow::on_comPortListUpdate);
 
     connect(ui->horizontalRuler, SIGNAL(scaleChanged(double)), ui->verticalRuler, SLOT(changeScale(double)));
@@ -279,10 +337,38 @@ void MainWindow::showGCode(EngagerProgram *program) {
     ui->gcodeText->setText(program->programText());
 }
 
-void MainWindow::on_actionCreate_GCode_triggered() {
-    if (mainProgram) {
-        runEngagerProgram(mainProgram);
+void MainWindow::addImage(QString filename) {
+    QImage image;
+    if (filename.endsWith(".svg")) {
+        ui->mainView->addSvgToScene(filename);
+    } else if (image.load(filename)) {
+        ui->mainView->addPixmapToScene(QPixmap::fromImage(image));
+    }
+    ui->mainView->updateSceneRect();
+}
+
+void MainWindow::addRecentImagePath(QString filename) {
+    recentImagePaths.append(filename);
+    if (ui->menuAdd_recent_image->actions().size() == 1 &&
+        ui->menuAdd_recent_image->actions().at(0)->text() == "No recent items") {
+        ui->menuAdd_recent_image->actions()[0]->setText(filename);
+        ui->menuAdd_recent_image->actions()[0]->setEnabled(true);
+        connect(ui->menuAdd_recent_image->actions()[0], SIGNAL(triggered()), this,
+                SLOT(on_actionRecentImageAdd_triggered()));
     } else {
-        runEngagerProgram(new EngagerProgram(ui->mainView, creator));
+        QAction *action = new QAction();
+        action->setText(filename);
+        connect(action, SIGNAL(triggered()), this, SLOT(on_actionRecentImageAdd_triggered()));
+        ui->menuAdd_recent_image->addAction(action);
+    }
+}
+
+void MainWindow::on_actionCreate_GCode_triggered() {
+    runEngagerProgram(mainProgram ? mainProgram : new EngagerProgram(ui->mainView, creator));
+}
+
+void MainWindow::on_actionRecentImageAdd_triggered() {
+    if (QAction * action = qobject_cast<QAction *>(QObject::sender())) {
+        addImage(action->text());
     }
 }
