@@ -68,6 +68,7 @@ private:
     void runEngagerProgram(EngagerProgram *program);
     void showGCode(EngagerProgram *program);
     void addImage(QString filename);
+    void addRecentImagePath(QString filename);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
