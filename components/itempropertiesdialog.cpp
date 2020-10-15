@@ -10,10 +10,10 @@ ItemPropertiesDialog::ItemPropertiesDialog(QWidget *parent) :
     ui->propertiesTable->setModel(itemPropertyModel);
     mainItem = nullptr;
     itemPropertyNames << tr("Scale") << tr("Position X, mm") << tr("Position Y, mm") << tr("Max Intensity value")
-                      << tr("Invert Intensity") << tr("Mirror X") << tr("Mirror Y") << tr("Rotation");
+                      << tr("Invert Intensity") << tr("Mirror X") << tr("Mirror Y") << tr("Rotation") << tr("Number of passes");
     itemPropertyIndexes << SCALE << POSITION_X << POSITION_Y << MAX_INTENSITY_VALUE << INVERT_INTENSITY << MIRROR_X
-                        << MIRROR_Y << ROTATION;
-    itemPropertyMultiply << false << true << true << false << false << false << false << false;
+                        << MIRROR_Y << ROTATION << NUMBER_OF_PASSES;
+    itemPropertyMultiply << false << true << true << false << false << false << false << false << false;
 }
 
 ItemPropertiesDialog::~ItemPropertiesDialog() {

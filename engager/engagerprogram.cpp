@@ -124,15 +124,17 @@ void EngagerProgram::commandQueueFromMainView(MainView *mainView, ICommandCreato
         bool mirrorX = item->data(MIRROR_X).toBool();
         bool mirrorY = item->data(MIRROR_Y).toBool();
         int maxIntensity = item->data(MAX_INTENSITY_VALUE).toInt();
+        int numberOfPasses = item->data(NUMBER_OF_PASSES).toInt();
         const QGraphicsPixmapItem *pixmapItem = dynamic_cast<const QGraphicsPixmapItem*>(item);
         if (pixmapItem != nullptr) {
             engagerProgram.append(creator->engageImageQueue(pixmapItem->pixmap().toImage(), x, y, scale,
-                                                            maxIntensity, invert, mirrorX, mirrorY));
+                                                            maxIntensity, invert, mirrorX, mirrorY, numberOfPasses));
         } else {
             MainSvgItem *svgItem = dynamic_cast<MainSvgItem*>(item);
             if (svgItem != nullptr) {
                 engagerProgram.append(creator->engageImageQueue(svgItem->renderPixmap().toImage(), x, y, 1,
-                                                                maxIntensity, invert, mirrorX, mirrorY));
+                                                                maxIntensity, invert, mirrorX, mirrorY,
+                                                                numberOfPasses));
             }
         }
     }

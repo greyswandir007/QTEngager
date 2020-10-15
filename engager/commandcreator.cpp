@@ -124,11 +124,11 @@ CommandQueue CommandCreator::circleQueue(qreal x, qreal y, qreal r, int power, i
 }
 
 CommandQueue CommandCreator::engageImageQueue(QImage image, qreal x, qreal y, qreal scale, int maxIntensity,
-                                              bool invert, bool mirrorX, bool mirrorY) {
-    CommandQueue commands;
-    commands.append(startQueue());
-    commands.append(gcode->moveZero());
-    commands.append(gcode->setNewZeroCoordinate());
+                                              bool invert, bool mirrorX, bool mirrorY, int numberOfPasses) {
+    CommandQueue baseCommands;
+    baseCommands.append(startQueue());
+    baseCommands.append(gcode->moveZero());
+    baseCommands.append(gcode->setNewZeroCoordinate());
     qreal stepX = 0.1 * scale;
     qreal startX = x;
     int sign = invert ? 1 : -1;
@@ -137,6 +137,7 @@ CommandQueue CommandCreator::engageImageQueue(QImage image, qreal x, qreal y, qr
     int dirX = mirrorX ? -1 : 1;
     int dirY = mirrorY ? -1 : 1;
     int i = mirrorY ? image.height() - 1 : 0;
+    CommandQueue commands;
     while (!heightComplete) {
         qreal y1 = y;
         for (int k = 0; k < scale; k++) {
@@ -176,8 +177,11 @@ CommandQueue CommandCreator::engageImageQueue(QImage image, qreal x, qreal y, qr
             heightComplete = true;
         }
     }
-    commands.append(centerQueue());
-    return commands;
+    for (int i = 0; i < numberOfPasses; i++) {
+        baseCommands.append(commands);
+    }
+    baseCommands.append(centerQueue());
+    return baseCommands;
 }
 
 QRectF CommandCreator::imageRect(QImage image, qreal x, qreal y, qreal scale) {

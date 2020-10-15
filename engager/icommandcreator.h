@@ -23,7 +23,8 @@ public:
     virtual CommandQueue circleQueue(int speed) = 0;
     virtual CommandQueue circleQueue(qreal x, qreal y, qreal r, int power, int speed) = 0;
     virtual CommandQueue engageImageQueue(QImage image, qreal x, qreal y, qreal scale, int maxIntensity,
-                                          bool invert = false, bool mirrorX = false, bool mirrorY = false) = 0;
+                                          bool invert = false, bool mirrorX = false, bool mirrorY = false,
+                                          int numberOfPasses = 1) = 0;
     virtual QRectF imageRect(QImage image, qreal x, qreal y, qreal scale) = 0;
 
     virtual IGCodeCommands *gcodeCommands() = 0;

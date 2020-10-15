@@ -84,6 +84,7 @@ void MainView::addItemToScene(QGraphicsItem *item) {
     item->setData(MIRROR_X, false);
     item->setData(MIRROR_Y, false);
     item->setData(ROTATION, 0.0);
+    item->setData(NUMBER_OF_PASSES, 1);
     item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
     item->setScale(mainScale * mainScaleFactor * item->data(SCALE).toDouble() * item->data(SCALE2).toDouble());
     scene()->addItem(item);
